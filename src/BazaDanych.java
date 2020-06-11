@@ -2,7 +2,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.sql.*;
 import java.util.ArrayList;
-import
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.text.WordUtils;
@@ -36,13 +35,17 @@ public class BazaDanych {
         }
     }
 
-    public void addStudent(Student s, String haslo) throws SQLException, InvalidKeySpecException, NoSuchAlgorithmException {
+    public boolean addStudent(Student s, String haslo) throws SQLException, InvalidKeySpecException, NoSuchAlgorithmException {
         PreparedStatement ps = conn.prepareStatement("INSERT INTO studenci(imienazwisko, passwordhash, " +
                 "salt, pesel, rokstudiow, nralbumu) VALUES (?, ?, ?, ?, ?, ?)");
         ImmutablePair<String, byte[]> hasla = Passwords.generateHashPair(haslo);
         ps.setString(1, s.getImieNazwisko());
         ps.setString(2, hasla.left);
         ps.setBytes(3, hasla.right);
+        ps.setString(4, s.getPesel());
+        ps.setInt(5, s.getRok_studiow());
+        ps.setInt(6, s.getNralbumu());
+        return ps.execute();
     }
 
     public ResultSet getStudent(Student s) throws SQLException {
@@ -52,8 +55,7 @@ public class BazaDanych {
             ps.setInt(1, s.getNralbumu());
         } else if (!s.getImieNazwisko().equals(""))
             ps.setString(1, s.getImieNazwisko());
-        ResultSet wynik = ps.executeQuery();
-        return wynik;
+        return ps.executeQuery();
     }
 
     public ArrayList<ImmutablePair<String, String>> getGrades(int student_id) throws SQLException {

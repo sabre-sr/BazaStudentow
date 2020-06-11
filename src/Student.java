@@ -1,9 +1,9 @@
 public class Student extends Osoba {
-    private String[] pesel;
+    private String pesel;
     private int nralbumu;
     private int rok_studiow;
 
-    public String[] getPesel() {
+    public String getPesel() {
         return pesel;
     }
 
