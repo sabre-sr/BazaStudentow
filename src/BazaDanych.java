@@ -1,5 +1,8 @@
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.sql.*;
 import java.util.ArrayList;
+import
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.text.WordUtils;
@@ -25,11 +28,21 @@ public class BazaDanych {
     protected void finalize() {
         if (this.conn != null) {
             try {
+                conn.commit();
                 conn.close();
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
         }
+    }
+
+    public void addStudent(Student s, String haslo) throws SQLException, InvalidKeySpecException, NoSuchAlgorithmException {
+        PreparedStatement ps = conn.prepareStatement("INSERT INTO studenci(imienazwisko, passwordhash, " +
+                "salt, pesel, rokstudiow, nralbumu) VALUES (?, ?, ?, ?, ?, ?)");
+        ImmutablePair<String, byte[]> hasla = Passwords.generateHashPair(haslo);
+        ps.setString(1, s.getImieNazwisko());
+        ps.setString(2, hasla.left);
+        ps.setBytes(3, hasla.right);
     }
 
     public ResultSet getStudent(Student s) throws SQLException {
@@ -56,7 +69,6 @@ public class BazaDanych {
             ResultSet oceny = ps.executeQuery();
             oceny.next();
             results.add(new ImmutablePair<>(przedmioty.getString("nazwa"), oceny.getString("oceny")));
-            continue;
         }
         return null;
     }
