@@ -3,4 +3,8 @@ public abstract class Osoba {
     public Osoba(String imienazwisko) {
         this.imienazwisko = imienazwisko;
     }
+
+    public String getImienazwisko() {
+        return imienazwisko;
+    }
 }
