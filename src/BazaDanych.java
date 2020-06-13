@@ -9,7 +9,8 @@ import org.apache.commons.lang3.text.WordUtils;
 import javax.swing.plaf.nimbus.State;
 
 public final class BazaDanych {
-    static private Connection conn;
+    public static BazaDanych bazaDanych = new BazaDanych();
+    private Connection conn;
 
     private BazaDanych() {
         Connection conn = null;
@@ -37,7 +38,7 @@ public final class BazaDanych {
         }
     }
 
-    public static boolean addStudent(Student s, String haslo) throws SQLException, InvalidKeySpecException, NoSuchAlgorithmException {
+    public boolean addStudent(Student s, String haslo) throws SQLException, InvalidKeySpecException, NoSuchAlgorithmException {
         PreparedStatement ps = conn.prepareStatement("INSERT INTO studenci(imienazwisko, passwordhash, " +
                 "salt, pesel, rokstudiow, nralbumu) VALUES (?, ?, ?, ?, ?, ?)");
         ImmutablePair<String, byte[]> hasla = Passwords.generateHashPair(haslo);
@@ -50,7 +51,7 @@ public final class BazaDanych {
         return ps.execute();
     }
 
-    public static boolean addProwadzacy(Prowadzacy p, String haslo) throws SQLException, InvalidKeySpecException, NoSuchAlgorithmException {
+    public boolean addProwadzacy(Prowadzacy p, String haslo) throws SQLException, InvalidKeySpecException, NoSuchAlgorithmException {
         PreparedStatement ps = conn.prepareStatement("INSERT INTO prowadzacy(imienazwisko, passwordhash, przedmiot, salt) VALUES (?, ?, ?, ?)");
         ImmutablePair<String, byte[]> hasla = Passwords.generateHashPair(haslo);
         ps.setString(1, p.getImienazwisko());
@@ -60,7 +61,7 @@ public final class BazaDanych {
         return ps.execute();
     }
 
-    public static ResultSet getStudent(Student s) throws SQLException {
+    public ResultSet getStudent(Student s) throws SQLException {
         // TODO: jezeli nie wszystkie pola studenta sa podane, dodaj dwiazdki (*)
         PreparedStatement ps = conn.prepareStatement("SELECT * FROM studenci WHERE (?=?)", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
         if (s.getNralbumu() != 0) {
@@ -71,7 +72,7 @@ public final class BazaDanych {
         return ps.executeQuery();
     }
 
-    public static ArrayList<ImmutablePair<String, String>> getGrades(int student_id) throws SQLException {
+    public ArrayList<ImmutablePair<String, String>> getGrades(int student_id) throws SQLException {
         PreparedStatement ps = conn.prepareStatement("SELECT * FROM przedmioty");
         ResultSet przedmioty = ps.executeQuery();
         ArrayList<ImmutablePair<String, String>> results = new ArrayList<>();
@@ -88,7 +89,7 @@ public final class BazaDanych {
         return results;
     }
 
-    public static void addPrzedmiot(String przedmiot) throws SQLException {
+    public void addPrzedmiot(String przedmiot) throws SQLException {
         String tabelanazwa = WordUtils.capitalizeFully(przedmiot, ' ').replaceAll(" ", "");
         String sql = String.format("create table %s\n" +
                 "(\n" +
@@ -109,7 +110,7 @@ public final class BazaDanych {
         ps.execute();
     }
 
-    public static void main(String[] args) throws SQLException {
+    public void main(String[] args) throws SQLException {
         new BazaDanych().addPrzedmiot("Nazwa testowa");
     }
 

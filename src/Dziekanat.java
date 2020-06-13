@@ -8,17 +8,16 @@ public class Dziekanat extends Osoba {
         super(imienazwisko);
     }
     public void addStudent(Student s, String haslo) throws InvalidKeySpecException, SQLException, NoSuchAlgorithmException {
-        BazaDanych.addStudent(s,haslo);
+        BazaDanych.bazaDanych.addStudent(s,haslo);
     }
     public void graduateStudent(Student s) throws SQLException {
-        ResultSet studentQuery = BazaDanych.getStudent(s);
+        ResultSet studentQuery = BazaDanych.bazaDanych.getStudent(s);
         studentQuery.updateInt("rokstudiow", studentQuery.getInt("rokstudiow")+1) ;
     }
     public boolean addProwadzacy(Prowadzacy p, String haslo) throws InvalidKeySpecException, SQLException, NoSuchAlgorithmException {
-        return BazaDanych.addProwadzacy(p,haslo);
+        return BazaDanych.bazaDanych.addProwadzacy(p,haslo);
     }
     public void addPrzedmiot(String przedmiot) throws SQLException {
-        BazaDanych.addPrzedmiot(przedmiot);
-        Pair
+        BazaDanych.bazaDanych.addPrzedmiot(przedmiot);
     }
 }

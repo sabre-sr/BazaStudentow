@@ -33,8 +33,8 @@ public class Student extends Osoba {
         this.rok_studiow = rok_studiow;
     }
     public String getGrades() throws SQLException {
-        ResultSet studentQuery = BazaDanych.getStudent(this);
-        ArrayList<ImmutablePair<String, String>> oceny = BazaDanych.getGrades(studentQuery.getInt("id"));
+        ResultSet studentQuery = BazaDanych.bazaDanych.getStudent(this);
+        ArrayList<ImmutablePair<String, String>> oceny = BazaDanych.bazaDanych.getGrades(studentQuery.getInt("id"));
         StringBuilder out = new StringBuilder();
         for (ImmutablePair<String, String> i:oceny) {
             out.append(i.left).append(": ").append(i.right);
