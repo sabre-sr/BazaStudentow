@@ -1,5 +1,11 @@
 public class Prowadzacy extends Osoba{
-    public Prowadzacy(String imienazwisko) {
+    private String przedmiot;
+    public Prowadzacy(String imienazwisko, String przedmiot) {
         super(imienazwisko);
+        this.przedmiot = przedmiot;
+    }
+
+    public String getPrzedmiot() {
+        return przedmiot;
     }
 }
