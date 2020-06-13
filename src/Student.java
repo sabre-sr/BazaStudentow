@@ -18,7 +18,7 @@ public class Student extends Osoba {
     public String getImieNazwisko() {
         return super.getImienazwisko();
     }
-    public Student(String imienazwisko, String[] pesel, int nralbumu, int rok_studiow)  {
+    public Student(String imienazwisko, String pesel, int nralbumu, int rok_studiow)  {
         super(imienazwisko);
         this.pesel = pesel;
         this.nralbumu = nralbumu;
