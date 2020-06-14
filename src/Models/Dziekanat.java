@@ -30,7 +30,7 @@ public class Dziekanat extends Osoba {
     }
 
     public static void main(String[] args) throws InvalidKeySpecException, SQLException, NoSuchAlgorithmException {
-        System.out.println(BazaDanych.bazaDanych.addDziekanat());
+//        System.out.println(BazaDanych.bazaDanych.addDziekanat());
 //        System.out.println(BazaDanych.bazaDanych.logIn("root", "root", "dziekanat"));
     }
 }
