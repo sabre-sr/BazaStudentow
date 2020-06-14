@@ -6,6 +6,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 
 public class Dziekanat extends Osoba {
     public Dziekanat(String imienazwisko) {
@@ -30,7 +31,9 @@ public class Dziekanat extends Osoba {
     }
 
     public static void main(String[] args) throws InvalidKeySpecException, SQLException, NoSuchAlgorithmException {
-//        System.out.println(BazaDanych.bazaDanych.addDziekanat());
-//        System.out.println(BazaDanych.bazaDanych.logIn("root", "root", "dziekanat"));
+        String haslo = "[r, o, o, t]";
+        System.out.println(BazaDanych.bazaDanych.addDziekanat(new Dziekanat("root"), haslo));
+//        System.out.println(BazaDanych.bazaDanych.addDziekanat(new Dziekanat("root"), Arrays.toString(new String[]{haslo})));
+//        System.out.println(BazaDanych.bazaDanych.logIn("root", "root" , "dziekanat"));
     }
 }

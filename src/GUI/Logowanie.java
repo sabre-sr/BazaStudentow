@@ -40,8 +40,9 @@ public class Logowanie extends JFrame {
         this.add(this.zamknij = new JButton("Zamknij"));
         this.zamknij.addActionListener(e -> System.exit(0));
         this.ok.addActionListener(e -> {
+            System.out.println(Arrays.toString(this.haslo.getPassword()));
             try {
-                if (BazaDanych.bazaDanych.logIn(this.login.getText(), this.haslo.getPassword(), this.trybDostepu.getSelection().getActionCommand()))
+                if (BazaDanych.bazaDanych.logIn(this.login.getText(), Arrays.toString(this.haslo.getPassword()), this.trybDostepu.getSelection().getActionCommand()))
                     JOptionPane.showMessageDialog(null, "Zalogowano.");
                 else JOptionPane.showMessageDialog(null, "Błędne hasło");
             } catch (SQLException throwables) {
@@ -51,7 +52,6 @@ public class Logowanie extends JFrame {
                 JOptionPane.showMessageDialog(null, "Błąd z dostępem do funkcji szyfrującej.");
                 invalidKeySpecException.printStackTrace();
             }
-
         });
     }
 
