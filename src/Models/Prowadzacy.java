@@ -1,3 +1,7 @@
+package Models;
+
+import Services.BazaDanych;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 

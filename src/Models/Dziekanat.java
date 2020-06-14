@@ -1,3 +1,7 @@
+package Models;
+
+import Services.BazaDanych;
+
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.sql.ResultSet;
@@ -19,5 +23,14 @@ public class Dziekanat extends Osoba {
     }
     public void addPrzedmiot(String przedmiot) throws SQLException {
         BazaDanych.bazaDanych.addPrzedmiot(przedmiot);
+    }
+    public void removeStudent(Student student) throws SQLException {
+        ResultSet query = BazaDanych.bazaDanych.getStudent(student);
+        BazaDanych.bazaDanych.removeStudent(query);
+    }
+
+    public static void main(String[] args) throws InvalidKeySpecException, SQLException, NoSuchAlgorithmException {
+        System.out.println(BazaDanych.bazaDanych.addDziekanat());
+//        System.out.println(BazaDanych.bazaDanych.logIn("root", "root", "dziekanat"));
     }
 }

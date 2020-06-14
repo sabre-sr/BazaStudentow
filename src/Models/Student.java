@@ -1,3 +1,8 @@
+package Models;
+
+import Exceptions.InvalidPESELException;
+import Services.BazaDanych;
+import Tools.PESEL;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.sql.ResultSet;
@@ -29,13 +34,13 @@ public class Student extends Osoba {
         super(imienazwisko);
         if (PESEL.PESELValid(pesel))
             this.pesel = pesel;
-        else throw new InvalidPESELException("Nieprawidlowy PESEL");
+        else throw new InvalidPESELException("Nieprawidlowy Tools.PESEL");
         this.nralbumu = nralbumu;
         this.rok_studiow = rok_studiow;
     }
 
     public String getGrades() throws SQLException {
-        ResultSet studentQuery = BazaDanych.bazaDanych.getStudent(this);
+        ResultSet studentQuery = Services.BazaDanych.bazaDanych.getStudent(this);
         ArrayList<ImmutablePair<String, ResultSet>> oceny = BazaDanych.bazaDanych.getGrades(studentQuery.getInt("id"));
         StringBuilder out = new StringBuilder();
         for (ImmutablePair<String, ResultSet> i : oceny) {
