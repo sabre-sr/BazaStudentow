@@ -7,6 +7,7 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.text.WordUtils;
 
 import javax.swing.plaf.nimbus.State;
+import javax.xml.transform.Result;
 
 public final class BazaDanych {
     public static BazaDanych bazaDanych = new BazaDanych();
@@ -21,7 +22,7 @@ public final class BazaDanych {
             throwables.printStackTrace();
         }
         if (conn != null)
-            BazaDanych.conn = conn;
+            this.conn = conn;
     }
 
     /**
@@ -72,10 +73,10 @@ public final class BazaDanych {
         return ps.executeQuery();
     }
 
-    public ArrayList<ImmutablePair<String, String>> getGrades(int student_id) throws SQLException {
+    public ArrayList<ImmutablePair<String, ResultSet>> getGrades(int student_id) throws SQLException {
         PreparedStatement ps = conn.prepareStatement("SELECT * FROM przedmioty");
         ResultSet przedmioty = ps.executeQuery();
-        ArrayList<ImmutablePair<String, String>> results = new ArrayList<>();
+        ArrayList<ImmutablePair<String, ResultSet>> results = new ArrayList<>();
         while (przedmioty.next()) {
             String przedmiot = przedmioty.getString("nazwatabeli");
             System.out.println(przedmiot);
@@ -83,10 +84,16 @@ public final class BazaDanych {
             ps = conn.prepareStatement(query);
             ps.setInt(1, student_id);
             ResultSet oceny = ps.executeQuery();
-            oceny.next();
-            results.add(new ImmutablePair<>(przedmioty.getString("nazwa"), oceny.getString("oceny")));
+            results.add(new ImmutablePair<>(przedmiot, oceny));
         }
         return results;
+    }
+
+    ResultSet getGrade(int student_id, String przedmiot) throws SQLException {
+        String query = String.format("SELECT * FROM %S WHERE (id_stud = ?)", przedmiot);
+        PreparedStatement ps = conn.prepareStatement(query);
+        ps.setInt(1, student_id);
+        return ps.executeQuery();
     }
 
     public void addPrzedmiot(String przedmiot) throws SQLException {

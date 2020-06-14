@@ -24,6 +24,7 @@ public class Student extends Osoba {
     public String getImieNazwisko() {
         return super.getImienazwisko();
     }
+
     public Student(String imienazwisko, String pesel, int nralbumu, int rok_studiow) throws InvalidPESELException {
         super(imienazwisko);
         if (PESEL.PESELValid(pesel))
@@ -32,12 +33,13 @@ public class Student extends Osoba {
         this.nralbumu = nralbumu;
         this.rok_studiow = rok_studiow;
     }
+
     public String getGrades() throws SQLException {
         ResultSet studentQuery = BazaDanych.bazaDanych.getStudent(this);
-        ArrayList<ImmutablePair<String, String>> oceny = BazaDanych.bazaDanych.getGrades(studentQuery.getInt("id"));
+        ArrayList<ImmutablePair<String, ResultSet>> oceny = BazaDanych.bazaDanych.getGrades(studentQuery.getInt("id"));
         StringBuilder out = new StringBuilder();
-        for (ImmutablePair<String, String> i:oceny) {
-            out.append(i.left).append(": ").append(i.right);
+        for (ImmutablePair<String, ResultSet> i : oceny) {
+            out.append(i.left).append(": ").append(i.right).append('\n');
         }
         return out.toString();
     }
