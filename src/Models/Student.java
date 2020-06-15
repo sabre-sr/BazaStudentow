@@ -30,6 +30,10 @@ public class Student extends Osoba {
         return super.getImienazwisko();
     }
 
+    public static Student createStudent(ResultSet resultSet) throws SQLException, InvalidPESELException {
+        return new Student(resultSet.getString("imienazwisko"), resultSet.getString("pesel"), resultSet.getInt("nralbumu"), resultSet.getInt("rokstudiow"));
+    }
+
     public Student(String imienazwisko, String pesel, int nralbumu, int rok_studiow) throws InvalidPESELException {
         super(imienazwisko);
         if (PESEL.PESELValid(pesel))

@@ -5,7 +5,9 @@ import java.security.spec.InvalidKeySpecException;
 import java.sql.*;
 import java.util.ArrayList;
 
+import Exceptions.InvalidPESELException;
 import Models.Dziekanat;
+import Models.Osoba;
 import Models.Prowadzacy;
 import Models.Student;
 import Tools.Passwords;
@@ -49,17 +51,28 @@ public final class BazaDanych {
         return ps.executeQuery();
     }
 
-    public boolean logIn(String imienazwisko, @NotNull String haslo, String pozycja) throws SQLException, InvalidKeySpecException, NoSuchAlgorithmException {
+    public Osoba logIn(String imienazwisko, @NotNull String haslo, String pozycja) throws SQLException, InvalidKeySpecException, NoSuchAlgorithmException, InvalidPESELException {
         String query = String.format("SELECT * FROM %s WHERE (imienazwisko = ?)", pozycja);
         ps = conn.prepareStatement(query);
         ps.setString(1, imienazwisko);
         ResultSet result = ps.executeQuery();
         if (!result.next())
-            return false;
+            return null;
         String hash = result.getString("passwordhash");
         byte[] salt = result.getBytes("salt");
-        return Passwords.validatePassword(haslo, salt, hash);
+        if (Passwords.validatePassword(haslo, salt, hash)) {
+            if (pozycja.equals("student"))
+                return Student.createStudent(result);
+            else if (pozycja.equals("prowadzacy"))
+                return Prowadzacy.createProwadzacy(result);
+            else if (pozycja.equals("dziekanat"))
+                return Dziekanat.createDziekanat(result);
+            else return null;
+        }
+        return null;
     }
+
+
 
     public boolean addStudent(Student s, String haslo) throws SQLException, InvalidKeySpecException, NoSuchAlgorithmException {
         ps = conn.prepareStatement("INSERT INTO studenci(imienazwisko, passwordhash, " +
@@ -157,7 +170,7 @@ public final class BazaDanych {
         conn.commit();
     }
 
-    public void main(String[] args) throws SQLException {
+    public void main(String[] args) {
 
     }
 

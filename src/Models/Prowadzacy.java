@@ -1,5 +1,6 @@
 package Models;
 
+import Exceptions.InvalidPESELException;
 import Services.BazaDanych;
 
 import java.sql.ResultSet;
@@ -12,6 +13,9 @@ public class Prowadzacy extends Osoba{
         this.przedmiot = przedmiot;
     }
 
+    public static Prowadzacy createProwadzacy(ResultSet resultSet) throws SQLException, InvalidPESELException {
+        return new Prowadzacy(resultSet.getString("imienazwisko"), resultSet.getString("przedmiot"));
+    }
     public String getPrzedmiot() {
         return przedmiot;
     }

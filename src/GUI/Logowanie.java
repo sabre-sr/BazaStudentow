@@ -1,5 +1,6 @@
 package GUI;
 
+import Exceptions.InvalidPESELException;
 import Services.BazaDanych;
 import Tools.Passwords;
 
@@ -17,6 +18,7 @@ public class Logowanie extends JFrame {
     JRadioButton student, prowadzacy, dziekanat;
     ButtonGroup trybDostepu;
     JButton ok, zamknij;
+
     public Logowanie() {
         this.add(login_label = new JLabel("Login: "));
         this.add(login = new JTextField(15));
@@ -42,17 +44,19 @@ public class Logowanie extends JFrame {
         this.ok.addActionListener(e -> {
             System.out.println(Arrays.toString(this.haslo.getPassword()));
             try {
-                if (BazaDanych.bazaDanych.logIn(this.login.getText(), Arrays.toString(this.haslo.getPassword()), this.trybDostepu.getSelection().getActionCommand())) {
+                if (BazaDanych.bazaDanych.logIn(this.login.getText(), Arrays.toString(this.haslo.getPassword()), this.trybDostepu.getSelection().getActionCommand()) != null) {
                     this.dispose();
                     JOptionPane.showMessageDialog(null, "Zalogowano.");
-                }
-                else JOptionPane.showMessageDialog(null, "Błędne hasło");
+                } else JOptionPane.showMessageDialog(null, "Błędne hasło");
             } catch (SQLException throwables) {
                 JOptionPane.showMessageDialog(null, "Błąd dostępu do bazy danych");
                 throwables.printStackTrace();
             } catch (InvalidKeySpecException | NoSuchAlgorithmException invalidKeySpecException) {
                 JOptionPane.showMessageDialog(null, "Błąd z dostępem do funkcji szyfrującej.");
                 invalidKeySpecException.printStackTrace();
+            } catch (InvalidPESELException invalidPESELException) {
+                JOptionPane.showMessageDialog(null, "Na twoim koncie wprowadzony jest nieprawidlowy numer Pesel. Skontaktuj się z administracją.");
+                invalidPESELException.printStackTrace();
             }
         });
     }
