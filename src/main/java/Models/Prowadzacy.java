@@ -30,15 +30,17 @@ public class Prowadzacy extends Osoba{
         rs.updateFloat("ocenakoncowa", srednia);
     }
 
-    private float srednia(ResultSet rs) throws SQLException {
+    public static float srednia(String oceny) {
         float srednia = (float) 0.0;
-        while (rs.next()) {
-            String entry = rs.getString("oceny");
-            String[] tokens = entry.split(", ");
-            for (String i:tokens)
-                srednia+=Float.parseFloat(i);
+        String[] tokens = oceny.split(", ");
+        int liczba=0;
+        for (String i:tokens) {
+            srednia += Float.parseFloat(i);
+            liczba++;
         }
-        return srednia;
+        if (liczba == 0)
+            return (float) 0.0;
+        return srednia/liczba;
     }
 
     @Override

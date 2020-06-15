@@ -19,9 +19,7 @@ public class OcenyTabela extends JPanel {
         tableModel = new DefaultTableModel(kolumny,0){
             @Override
             public boolean isCellEditable(int row, int column) {
-                if (column == 1 || column == 2)
-                    return editable;
-                else return false;
+                return false;
             }
         };
         this.setLayout(new BorderLayout());

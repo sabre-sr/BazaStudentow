@@ -13,6 +13,7 @@ import Models.Student;
 import Utils.Passwords;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.text.WordUtils;
+import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.jetbrains.annotations.NotNull;
 
 public final class BazaDanych {
@@ -124,8 +125,8 @@ public final class BazaDanych {
     }
 
     public void updateGrades(int studentId, String grades, String ocenakoncowa, String przedmiotDb) throws SQLException {
-        String query = "UPDATE "+ przedmiotDb;
-        ps = conn.prepareStatement( query + " SET oceny ?, ocenakoncowa = ? WHERE id_stud = ?");
+        String query = "UPDATE " + przedmiotDb;
+        ps = conn.prepareStatement(query + " SET oceny ?, ocenakoncowa = ? WHERE id_stud = ?");
         ps.setString(1, grades);
         ps.setString(2, ocenakoncowa);
         ps.setInt(3, studentId);
@@ -153,6 +154,32 @@ public final class BazaDanych {
         ps = conn.prepareStatement(query);
         ps.setInt(1, student_id);
         return ps.executeQuery();
+    }
+
+    public ArrayList<Integer> getStudentIDList(String przedmiot) throws SQLException {
+        String query = String.format("SELECT * FROM %s", przedmiot);
+        ps = conn.prepareStatement(query);
+        ArrayList<Integer> out = new ArrayList<>();
+        ResultSet resultSet = ps.executeQuery();
+        while (resultSet.next())
+            out.add(resultSet.getInt("id_stud"));
+        return out;
+    }
+
+    public ArrayList<ImmutableTriple<String, String, String>> getGradeList(String przedmiot) throws SQLException {
+        String query = String.format("SELECT * FROM %s", przedmiot);
+        ps = conn.prepareStatement(query);
+        ArrayList<ImmutableTriple<String, String, String>> out = new ArrayList<>();
+        ResultSet resultSet = ps.executeQuery();
+        ResultSet uczniowie;
+        while (resultSet.next()) {
+            ps = conn.prepareStatement("SELECT * FROM studenci WHERE id=?");
+            ps.setInt(1, resultSet.getInt("id_stud"));
+            uczniowie = ps.executeQuery();
+            uczniowie.next();
+            out.add(new ImmutableTriple<String, String, String>(uczniowie.getString("imienazwisko"), resultSet.getString("oceny"), resultSet.getString("ocenakoncowa")));
+        }
+        return out;
     }
 
     public void addPrzedmiot(String przedmiot) throws SQLException {
