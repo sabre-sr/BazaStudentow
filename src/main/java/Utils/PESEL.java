@@ -9,6 +9,9 @@ public abstract class PESEL {
         for (int i = 0; i < 10; i++)
             checksum += Integer.parseInt(pesel.substring(i, i+1)) * waga[i];
         int ostatniaCyfra = Integer.parseInt(pesel.substring(10, 11));
+        checksum%=10;
+        checksum = 10 - checksum;
         return checksum%10 == ostatniaCyfra;
+
     }
 }

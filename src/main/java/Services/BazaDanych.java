@@ -112,7 +112,7 @@ public final class BazaDanych {
 
     public ResultSet getStudent(Student s) throws SQLException {
         // TODO: jezeli nie wszystkie pola studenta sa podane, dodaj dwiazdki (*)
-        ps = conn.prepareStatement("SELECT * FROM studenci WHERE (?=?)", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
+        ps = conn.prepareStatement("SELECT * FROM studenci WHERE (?=?)");
         if (s.getNralbumu() != 0) {
             ps.setInt(1, s.getNralbumu());
         } else if (!s.getImieNazwisko().equals(""))
@@ -120,8 +120,17 @@ public final class BazaDanych {
         return ps.executeQuery();
     }
 
+    public void updateGrades(int studentId, String grades, String ocenakoncowa, String przedmiotDb) throws SQLException {
+        String query = "UPDATE "+ przedmiotDb;
+        ps = conn.prepareStatement( query + " SET oceny ?, ocenakoncowa = ? WHERE id_stud = ?");
+        ps.setString(1, grades);
+        ps.setString(2, ocenakoncowa);
+        ps.setInt(3, studentId);
+        ps.execute();
+    }
+
     public ArrayList<ImmutablePair<String, ResultSet>> getGrades(int student_id) throws SQLException {
-        ps = conn.prepareStatement("SELECT * FROM przedmioty", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
+        ps = conn.prepareStatement("SELECT * FROM przedmioty");
         ResultSet przedmioty = ps.executeQuery();
         ArrayList<ImmutablePair<String, ResultSet>> results = new ArrayList<>();
         while (przedmioty.next()) {
@@ -131,7 +140,7 @@ public final class BazaDanych {
             ps = conn.prepareStatement(query);
             ps.setInt(1, student_id);
             ResultSet oceny = ps.executeQuery();
-            results.add(new ImmutablePair<>(przedmiot, oceny));
+            results.add(new ImmutablePair<>(przedmioty.getString("nazwa"), oceny));
         }
         return results;
     }

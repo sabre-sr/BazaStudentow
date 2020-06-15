@@ -62,9 +62,9 @@ public class Logowanie extends JFrame {
             } catch (InvalidKeySpecException | NoSuchAlgorithmException invalidKeySpecException) {
                 JOptionPane.showMessageDialog(null, "Błąd z dostępem do funkcji szyfrującej.");
                 invalidKeySpecException.printStackTrace();
-            } catch (InvalidPESELException invalidPESELException) {
+            }
+            catch (InvalidPESELException invalidPESELException) {
                 JOptionPane.showMessageDialog(null, "Na twoim koncie wprowadzony jest nieprawidlowy numer Pesel. Skontaktuj się z administracją.");
-
             }
         });
     }
