@@ -62,13 +62,16 @@ public final class BazaDanych {
         byte[] salt = result.getBytes("salt");
         int id = result.getInt("id");
         if (Passwords.validatePassword(haslo, salt, hash)) {
-            if (pozycja.equals("studenci"))
-                return Student.createStudent(result);
-            else if (pozycja.equals("prowadzacy"))
-                return Prowadzacy.createProwadzacy(result);
-            else if (pozycja.equals("dziekanat"))
-                return Dziekanat.createDziekanat(result);
-            else return null;
+            switch (pozycja) {
+                case "studenci":
+                    return Student.createStudent(result);
+                case "prowadzacy":
+                    return Prowadzacy.createProwadzacy(result);
+                case "dziekanat":
+                    return Dziekanat.createDziekanat(result);
+                default:
+                    return null;
+            }
         }
         return null;
     }

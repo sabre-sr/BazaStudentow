@@ -3,6 +3,7 @@ package GUI;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import javax.swing.*;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.sql.ResultSet;
@@ -11,10 +12,17 @@ import java.util.ArrayList;
 
 public class OcenyTabela extends JPanel {
     String[] kolumny = {"Przedmiot", "Oceny", "Ocena Końcowa"};
-    DefaultTableModel tableModel = new DefaultTableModel(kolumny,0);
 
-    public OcenyTabela(ArrayList<ImmutablePair<String, ResultSet>> oceny) throws SQLException {
+    public OcenyTabela(ArrayList<ImmutablePair<String, ResultSet>> oceny, boolean editable) throws SQLException {
         super();
+        DefaultTableModel tableModel = new DefaultTableModel(kolumny,0){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                if (column == 1 || column == 2)
+                    return editable;
+                else return false;
+            }
+        };
         this.setLayout(new BorderLayout());
         JTable table = new JTable(tableModel);
         table.setAutoCreateRowSorter(true);
