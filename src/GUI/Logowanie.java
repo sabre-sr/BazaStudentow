@@ -1,6 +1,7 @@
 package GUI;
 
 import Exceptions.InvalidPESELException;
+import Models.Osoba;
 import Services.BazaDanych;
 
 import javax.swing.*;
@@ -9,6 +10,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class Logowanie extends JFrame {
     JTextField login;
@@ -40,13 +42,20 @@ public class Logowanie extends JFrame {
         this.add(this.ok = new JButton("OK"));
         this.add(this.zamknij = new JButton("Zamknij"));
         this.zamknij.addActionListener(e -> System.exit(0));
+        var ref = new Object() {
+            Osoba uzytkownik = null;
+        };
         this.ok.addActionListener(e -> {
             System.out.println(Arrays.toString(this.haslo.getPassword()));
             try {
-                if (BazaDanych.bazaDanych.logIn(this.login.getText(), Arrays.toString(this.haslo.getPassword()), this.trybDostepu.getSelection().getActionCommand()) != null) {
+                ref.uzytkownik = BazaDanych.bazaDanych.logIn(this.login.getText(), Arrays.toString(this.haslo.getPassword()), this.trybDostepu.getSelection().getActionCommand());
+                if (ref.uzytkownik == null) {
+                    JOptionPane.showMessageDialog(null, "Błędne hasło");
+                } else {
+                    ref.uzytkownik.openWindow();
                     this.dispose();
                     JOptionPane.showMessageDialog(null, "Zalogowano.");
-                } else JOptionPane.showMessageDialog(null, "Błędne hasło");
+                }
             } catch (SQLException throwables) {
                 JOptionPane.showMessageDialog(null, "Błąd dostępu do bazy danych");
                 throwables.printStackTrace();

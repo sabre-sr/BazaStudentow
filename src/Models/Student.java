@@ -31,7 +31,9 @@ public class Student extends Osoba {
     }
 
     public static Student createStudent(ResultSet resultSet) throws SQLException, InvalidPESELException {
-        return new Student(resultSet.getString("imienazwisko"), resultSet.getString("pesel"), resultSet.getInt("nralbumu"), resultSet.getInt("rokstudiow"));
+        Student student = new Student(resultSet.getString("imienazwisko"), resultSet.getString("pesel"), resultSet.getInt("nralbumu"), resultSet.getInt("rokstudiow"));
+        student.setId(resultSet.getInt("id"));
+        return student;
     }
 
     public Student(String imienazwisko, String pesel, int nralbumu, int rok_studiow) throws InvalidPESELException {
@@ -41,6 +43,11 @@ public class Student extends Osoba {
         else throw new InvalidPESELException("Nieprawidlowy Tools.PESEL");
         this.nralbumu = nralbumu;
         this.rok_studiow = rok_studiow;
+    }
+
+    @Override
+    public void openWindow() throws SQLException {
+        new GUI.Student(this);
     }
 
     public String getGrades() throws SQLException {

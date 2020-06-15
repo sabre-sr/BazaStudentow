@@ -11,6 +11,7 @@ import java.util.ArrayList;
 public class Oceny extends JTable {
     String[] kolumny = {"Przedmiot", "Oceny", "Ocena Końcowa"};
     DefaultTableModel tableModel = new DefaultTableModel(kolumny, 3);
+
     public Oceny(ArrayList<ImmutablePair<String, ResultSet>> oceny) throws SQLException {
         JTable table = new JTable(tableModel);
         this.setAutoCreateRowSorter(true);

@@ -60,6 +60,7 @@ public final class BazaDanych {
             return null;
         String hash = result.getString("passwordhash");
         byte[] salt = result.getBytes("salt");
+        int id = result.getInt("id");
         if (Passwords.validatePassword(haslo, salt, hash)) {
             if (pozycja.equals("student"))
                 return Student.createStudent(result);
@@ -71,7 +72,6 @@ public final class BazaDanych {
         }
         return null;
     }
-
 
 
     public boolean addStudent(Student s, String haslo) throws SQLException, InvalidKeySpecException, NoSuchAlgorithmException {

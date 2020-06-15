@@ -14,7 +14,9 @@ public class Prowadzacy extends Osoba{
     }
 
     public static Prowadzacy createProwadzacy(ResultSet resultSet) throws SQLException, InvalidPESELException {
-        return new Prowadzacy(resultSet.getString("imienazwisko"), resultSet.getString("przedmiot"));
+        Prowadzacy prowadzacy = new Prowadzacy(resultSet.getString("imienazwisko"), resultSet.getString("przedmiot"));
+        prowadzacy.setId(resultSet.getInt("id"));
+        return prowadzacy;
     }
     public String getPrzedmiot() {
         return przedmiot;
@@ -36,5 +38,10 @@ public class Prowadzacy extends Osoba{
                 srednia+=Float.parseFloat(i);
         }
         return srednia;
+    }
+
+    @Override
+    public void openWindow() throws SQLException {
+        new GUI.Prowadzacy(this);
     }
 }
