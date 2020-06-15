@@ -5,7 +5,7 @@ Baza danych studentów.
   
   W bazie przechowywane są dane o: 
   
-  - studentach:imię i nazwisko, nralbumu, Tools.PESEL (testowanie na fikcyjnych danych spełniających warunek wymaganej liczby znaków), rok studiów;
+  - studentach:imię i nazwisko, nralbumu, Utils.PESEL (testowanie na fikcyjnych danych spełniających warunek wymaganej liczby znaków), rok studiów;
   - przedmiotach i ocenach z przedmiotów;
   - prowadzących;
   

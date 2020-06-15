@@ -2,7 +2,7 @@ package Models;
 
 import Exceptions.InvalidPESELException;
 import Services.BazaDanych;
-import Tools.PESEL;
+import Utils.PESEL;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.sql.ResultSet;

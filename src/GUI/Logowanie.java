@@ -2,7 +2,6 @@ package GUI;
 
 import Exceptions.InvalidPESELException;
 import Services.BazaDanych;
-import Tools.Passwords;
 
 import javax.swing.*;
 import java.awt.*;

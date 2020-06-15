@@ -1,4 +1,4 @@
-package Tools;
+package Utils;
 
 public abstract class PESEL {
     public static boolean PESELValid(String pesel) {

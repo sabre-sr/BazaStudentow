@@ -10,7 +10,7 @@ import Models.Dziekanat;
 import Models.Osoba;
 import Models.Prowadzacy;
 import Models.Student;
-import Tools.Passwords;
+import Utils.Passwords;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.text.WordUtils;
 import org.jetbrains.annotations.NotNull;
