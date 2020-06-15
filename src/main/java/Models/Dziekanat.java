@@ -1,6 +1,7 @@
 package Models;
 
 import Exceptions.InvalidPESELException;
+import GUI.DziekanatGUI;
 import Services.BazaDanych;
 
 import java.security.NoSuchAlgorithmException;
@@ -50,6 +51,6 @@ public class Dziekanat extends Osoba {
 
     @Override
     public void openWindow() throws SQLException {
-        new GUI.Dziekanat(this);
+        new DziekanatGUI(this);
     }
 }

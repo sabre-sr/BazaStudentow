@@ -28,7 +28,7 @@ public class Logowanie extends JFrame {
         this.add(student = new JRadioButton("Student"));
         this.add(prowadzacy = new JRadioButton("Prowadzący"));
         this.add(dziekanat = new JRadioButton("Dziekanat"));
-        this.student.setActionCommand("student");
+        this.student.setActionCommand("studenci");
         this.prowadzacy.setActionCommand("prowadzacy");
         this.dziekanat.setActionCommand("dziekanat");
         this.trybDostepu = new ButtonGroup();
@@ -64,7 +64,7 @@ public class Logowanie extends JFrame {
                 invalidKeySpecException.printStackTrace();
             } catch (InvalidPESELException invalidPESELException) {
                 JOptionPane.showMessageDialog(null, "Na twoim koncie wprowadzony jest nieprawidlowy numer Pesel. Skontaktuj się z administracją.");
-                invalidPESELException.printStackTrace();
+
             }
         });
     }

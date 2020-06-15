@@ -62,7 +62,7 @@ public final class BazaDanych {
         byte[] salt = result.getBytes("salt");
         int id = result.getInt("id");
         if (Passwords.validatePassword(haslo, salt, hash)) {
-            if (pozycja.equals("student"))
+            if (pozycja.equals("studenci"))
                 return Student.createStudent(result);
             else if (pozycja.equals("prowadzacy"))
                 return Prowadzacy.createProwadzacy(result);
@@ -170,8 +170,12 @@ public final class BazaDanych {
         conn.commit();
     }
 
-    public void main(String[] args) {
-
+    public void main(String[] args) throws SQLException, InvalidKeySpecException, NoSuchAlgorithmException {
+//        ImmutablePair<String, byte[]> hashPair = Passwords.generateHashPair("[1, 2, 3]");
+//        ps = conn.prepareStatement("UPDATE studenci SET passwordhash = ?, salt = ? WHERE imienazwisko = 'Jan Kowalski'");
+//        ps.setString(1, hashPair.left);
+//        ps.setBytes(2, hashPair.right);
+//        ps.execute();
     }
 
 }

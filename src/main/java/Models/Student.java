@@ -1,10 +1,13 @@
 package Models;
 
 import Exceptions.InvalidPESELException;
+import GUI.StudentGUI;
 import Services.BazaDanych;
 import Utils.PESEL;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -47,7 +50,7 @@ public class Student extends Osoba {
 
     @Override
     public void openWindow() throws SQLException {
-        new GUI.Student(this);
+        new StudentGUI(this);
     }
 
     public String getGrades() throws SQLException {
@@ -60,5 +63,7 @@ public class Student extends Osoba {
         return out.toString();
     }
 
-
+    public static void main(String[] args) throws InvalidKeySpecException, SQLException, NoSuchAlgorithmException {
+        BazaDanych.bazaDanych.main(null);
+    }
 }

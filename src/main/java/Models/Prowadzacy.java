@@ -1,6 +1,7 @@
 package Models;
 
 import Exceptions.InvalidPESELException;
+import GUI.ProwadzacyGUI;
 import Services.BazaDanych;
 
 import java.sql.ResultSet;
@@ -42,6 +43,6 @@ public class Prowadzacy extends Osoba{
 
     @Override
     public void openWindow() throws SQLException {
-        new GUI.Prowadzacy(this);
+        new ProwadzacyGUI(this);
     }
 }
