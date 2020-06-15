@@ -52,9 +52,9 @@ public class Logowanie extends JFrame {
                 if (ref.uzytkownik == null) {
                     JOptionPane.showMessageDialog(null, "Błędne hasło");
                 } else {
+                    JOptionPane.showMessageDialog(null, "Zalogowano.");
                     ref.uzytkownik.openWindow();
                     this.dispose();
-                    JOptionPane.showMessageDialog(null, "Zalogowano.");
                 }
             } catch (SQLException throwables) {
                 JOptionPane.showMessageDialog(null, "Błąd dostępu do bazy danych");
