@@ -12,10 +12,11 @@ import java.util.ArrayList;
 
 public class OcenyTabela extends JPanel {
     String[] kolumny = {"Przedmiot", "Oceny", "Ocena Końcowa"};
+    DefaultTableModel tableModel;
 
     public OcenyTabela(ArrayList<ImmutablePair<String, ResultSet>> oceny, boolean editable) throws SQLException {
         super();
-        DefaultTableModel tableModel = new DefaultTableModel(kolumny,0){
+        tableModel = new DefaultTableModel(kolumny,0){
             @Override
             public boolean isCellEditable(int row, int column) {
                 if (column == 1 || column == 2)

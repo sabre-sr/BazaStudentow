@@ -150,7 +150,7 @@ public final class BazaDanych {
 
     public ResultSet getGrade(int student_id, String przedmiot) throws SQLException {
         String query = String.format("SELECT * FROM %S WHERE (id_stud = ?)", przedmiot);
-        ps = conn.prepareStatement(query, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
+        ps = conn.prepareStatement(query);
         ps.setInt(1, student_id);
         return ps.executeQuery();
     }
@@ -167,8 +167,10 @@ public final class BazaDanych {
                 "            on update cascade on delete cascade,\n" +
                 "    oceny   text default null,\n" +
                 "    ocenakoncowa text default null\n" +
-                ");", tabelanazwa, (tabelanazwa + "_pk"));
-        ps = conn.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
+                ");" +
+                "create unique index %s_id_stud_uindex\n" +
+                "    on %s (id_stud);\n", tabelanazwa, (tabelanazwa + "_pk"), (tabelanazwa), tabelanazwa);
+        ps = conn.prepareStatement(sql);
         ps.execute();
         ps = conn.prepareStatement("INSERT INTO przedmioty(nazwa, nazwatabeli) VALUES (?, ?)");
         ps.setString(1, przedmiot);
