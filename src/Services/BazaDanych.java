@@ -153,7 +153,7 @@ public final class BazaDanych {
                 "    id_stud int not null\n" +
                 "        references studenci\n" +
                 "            on update cascade on delete cascade,\n" +
-                "    oceny   text,\n" +
+                "    oceny   text default null,\n" +
                 "    ocenakoncowa text default null\n" +
                 ");", tabelanazwa, (tabelanazwa + "_pk"));
         ps = conn.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);

@@ -21,7 +21,7 @@ public abstract class createDB {
             throwables.printStackTrace();
         }
         assert conn != null;
-        PreparedStatement ps = null;
+        PreparedStatement ps;
         try {
             ps = conn.prepareStatement("create table studenci\n" +
                     "(\n" +
