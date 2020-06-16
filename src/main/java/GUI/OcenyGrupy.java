@@ -1,10 +1,7 @@
 package GUI;
 
-import Models.Prowadzacy;
-import Services.BazaDanych;
-import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
-import org.apache.commons.lang3.tuple.MutablePair;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -13,12 +10,26 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class OcenyGrupy extends JPanel {
-    String[] kolumny = {"ID", "Nazwisko", "Oceny", "Ocena Końcowa"};
-    Object[] data;
+    final String[] kolumny = {"ID", "Nazwisko", "Oceny", "Ocena Końcowa"};
+    private Object[] data;
     DefaultTableModel tableModel;
 
     public OcenyGrupy(ArrayList<ImmutableTriple<String, String, String>> oceny, ArrayList<Integer> id) {
         super();
+        JTable table = buildTable(oceny, id);
+        ListSelectionModel cellSelectionModel = table.getSelectionModel();
+        cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        cellSelectionModel.addListSelectionListener(e -> {
+            new EditGrades();
+            //czeka az to wyzej sie zamknie
+            buildTable();
+        });
+        JScrollPane scrollPane = new JScrollPane(table);
+        this.add(scrollPane, BorderLayout.CENTER);
+    }
+
+    @NotNull
+    private JTable buildTable(ArrayList<ImmutableTriple<String, String, String>> oceny, ArrayList<Integer> id) {
         tableModel = new DefaultTableModel(kolumny, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -37,50 +48,7 @@ public class OcenyGrupy extends JPanel {
             tableModel.addRow(data);
         }
         table.setCellSelectionEnabled(true);
-        ListSelectionModel cellSelectionModel = table.getSelectionModel();
-        cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
-        cellSelectionModel.addListSelectionListener(e -> {
-            String output = null;
-            get
-        });
-        JScrollPane scrollPane = new JScrollPane(table);
-        this.add(scrollPane, BorderLayout.CENTER);
+        return table;
     }
 
-    private ImmutablePair<String, String> editGrades(String imienazwisko, String oceny, String ocenakoncowa) {
-        JLabel nazwisko = new JLabel(imienazwisko);
-        JButton ok = new JButton("Ok");
-        JFrame frame = new JFrame("Edycja");
-        ArrayList<JTextField> ocenyField = new ArrayList<>();
-        frame.add(nazwisko);
-        String[] tokens = oceny.split(" ");
-        for (String i : tokens) {
-            ocenyField.add(new JTextField(i, 3));
-            frame.add(ocenyField.get(ocenyField.size() - 1));
-        }
-        JLabel srednia = new JLabel("Ocena koncowa: (Obliczona srednia: " + Prowadzacy.srednia(oceny) + ")");
-        JTextField srednia_input = new JTextField(ocenakoncowa, 3);
-        frame.add(srednia);
-        frame.add(srednia_input);
-        frame.add(ok);
-        ok.addActionListener(e -> {
-            StringBuilder temp = new StringBuilder();
-            for (JTextField i : ocenyField) {
-                try {
-                    Float.parseFloat(i.getText());
-                    temp.append(i.getText()).append(" ");
-                } catch (NumberFormatException ignored) {}
-            }
-            MutablePair<String, String> pair = new MutablePair<>();
-            pair.left = temp.toString();
-            try {
-                Float.parseFloat(srednia_input.getText());
-                pair.right = srednia_input.getText();
-            } catch (NumberFormatException err) {
-                pair.right = ocenakoncowa;
-            }
-            BazaDanych.bazaDanych.set;
-        });
-    }
 }
