@@ -48,6 +48,18 @@ public class Student extends Osoba {
         this.rok_studiow = rok_studiow;
     }
 
+    public Student(String imienazwisko, String pesel, int nralbumu, int rok_studiow, int id) throws InvalidPESELException {
+        this(imienazwisko, pesel, nralbumu, rok_studiow);
+        setId(id);
+    }
+
+    public Student() {
+        super("");
+        this.pesel = "";
+        this.nralbumu = 0;
+        this.rok_studiow = 0;
+    }
+
     @Override
     public void openWindow() throws SQLException {
         new StudentGUI(this);

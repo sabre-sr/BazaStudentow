@@ -20,7 +20,7 @@ public class Dziekanat extends Osoba {
         return dziekanat;
     }
 
-    public void addStudent(Student s, String haslo) throws InvalidKeySpecException, SQLException, NoSuchAlgorithmException {
+    public void addStudent(Student s, char[] haslo) throws InvalidKeySpecException, SQLException, NoSuchAlgorithmException {
         BazaDanych.bazaDanych.addStudent(s, haslo);
     }
 
@@ -29,7 +29,7 @@ public class Dziekanat extends Osoba {
         studentQuery.updateInt("rokstudiow", studentQuery.getInt("rokstudiow") + 1);
     }
 
-    public boolean addProwadzacy(Prowadzacy p, String haslo) throws InvalidKeySpecException, SQLException, NoSuchAlgorithmException {
+    public boolean addProwadzacy(Prowadzacy p, char[] haslo) throws InvalidKeySpecException, SQLException, NoSuchAlgorithmException {
         return BazaDanych.bazaDanych.addProwadzacy(p, haslo);
     }
 
@@ -43,8 +43,6 @@ public class Dziekanat extends Osoba {
     }
 
     public static void main(String[] args) throws InvalidKeySpecException, SQLException, NoSuchAlgorithmException {
-        String haslo = "[r, o, o, t]";
-        System.out.println(BazaDanych.bazaDanych.addDziekanat(new Dziekanat("root"), haslo));
 //        System.out.println(BazaDanych.bazaDanych.addDziekanat(new Dziekanat("root"), Arrays.toString(new String[]{haslo})));
 //        System.out.println(BazaDanych.bazaDanych.logIn("root", "root" , "dziekanat"));
     }

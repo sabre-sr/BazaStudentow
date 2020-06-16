@@ -91,7 +91,7 @@ public abstract class createDB {
             ps.execute();
             conn.close();
             String haslo = "[r, o, o, t]";
-            BazaDanych.bazaDanych.addDziekanat(new Dziekanat("root"), haslo);
+            BazaDanych.bazaDanych.addDziekanat(new Dziekanat("root"), haslo.toCharArray());
         } catch (SQLException | InvalidKeySpecException | NoSuchAlgorithmException throwables) {
             throwables.printStackTrace();
             return false;

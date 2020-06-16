@@ -12,11 +12,10 @@ import org.jetbrains.annotations.NotNull;
 public abstract class Passwords {
     private static int petle = 1000;
     public static @NotNull
-    ImmutablePair<String, byte[]> generateHashPair(String haslo) throws InvalidKeySpecException, NoSuchAlgorithmException {
-        char[] chars = haslo.toCharArray();
+    ImmutablePair<String, byte[]> generateHashPair(char[] haslo) throws InvalidKeySpecException, NoSuchAlgorithmException {
         byte[] salt = getSalt();
 
-        PBEKeySpec spec = new PBEKeySpec(chars, salt, petle, 64 * 8);
+        PBEKeySpec spec = new PBEKeySpec(haslo, salt, petle, 64 * 8);
         SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
         byte[] hash = skf.generateSecret(spec).getEncoded();
         return new ImmutablePair<>(Arrays.toString(hash), salt);

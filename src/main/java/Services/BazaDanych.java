@@ -48,7 +48,7 @@ public final class BazaDanych {
     }
 
     public ResultSet getStudents() throws SQLException {
-        ps = conn.prepareStatement("SELECT * FROM studenci", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
+        ps = conn.prepareStatement("SELECT * FROM studenci");
         return ps.executeQuery();
     }
 
@@ -78,21 +78,16 @@ public final class BazaDanych {
     }
 
 
-    public void addStudent(Student s, String haslo) throws SQLException, InvalidKeySpecException, NoSuchAlgorithmException {
+    public void addStudent(Student s, char[] haslo) throws SQLException, InvalidKeySpecException, NoSuchAlgorithmException {
         ps = conn.prepareStatement("INSERT INTO studenci(imienazwisko, passwordhash, " +
                 "salt, pesel, rokstudiow, nralbumu) VALUES (?, ?, ?, ?, ?, ?)");
         ImmutablePair<String, byte[]> hasla = Passwords.generateHashPair(haslo);
-        ps.setString(1, s.getImieNazwisko());
-        ps.setString(2, hasla.left);
-        ps.setBytes(3, hasla.right);
-        ps.setString(4, s.getPesel());
-        ps.setInt(5, s.getRok_studiow());
-        ps.setInt(6, s.getNralbumu());
+        bindStudentFields(s, hasla);
         boolean result = ps.execute();
         conn.commit();
     }
 
-    public boolean addProwadzacy(Prowadzacy p, String haslo) throws SQLException, InvalidKeySpecException, NoSuchAlgorithmException {
+    public boolean addProwadzacy(Prowadzacy p, char[] haslo) throws SQLException, InvalidKeySpecException, NoSuchAlgorithmException {
         ps = conn.prepareStatement("INSERT INTO prowadzacy(imienazwisko, passwordhash, przedmiot, salt) VALUES (?, ?, ?, ?)", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
         ImmutablePair<String, byte[]> hasla = Passwords.generateHashPair(haslo);
         ps.setString(1, p.getImienazwisko());
@@ -104,7 +99,7 @@ public final class BazaDanych {
         return result;
     }
 
-    public boolean addDziekanat(Dziekanat dziekanat, String haslo) throws SQLException, InvalidKeySpecException, NoSuchAlgorithmException {
+    public boolean addDziekanat(Dziekanat dziekanat, char[] haslo) throws SQLException, InvalidKeySpecException, NoSuchAlgorithmException {
         ps = conn.prepareStatement("INSERT INTO dziekanat(imienazwisko, passwordhash, salt) VALUES (?,?,?)");
         @NotNull ImmutablePair<String, byte[]> hasla = Passwords.generateHashPair(haslo);
         ps.setString(1, dziekanat.getImienazwisko());
@@ -121,6 +116,22 @@ public final class BazaDanych {
         } else if (!s.getImieNazwisko().equals(""))
             ps.setString(1, s.getImieNazwisko());
         return ps.executeQuery();
+    }
+
+    public void editStudent (Student s, char[] haslo) throws SQLException, InvalidKeySpecException, NoSuchAlgorithmException {
+        ImmutablePair<String, byte[]> hashPair = Passwords.generateHashPair(haslo);
+        ps = conn.prepareStatement("UPDATE studenci SET imienazwisko = ?, passwordhash = ?, salt = ?, pesel = ?, rokstudiow = ?, nralbumu = ? WHERE id = ?");
+        bindStudentFields(s, hashPair);
+        ps.setInt(7,s.getId());
+    }
+
+    private void bindStudentFields(Student s, ImmutablePair<String, byte[]> hashPair) throws SQLException {
+        ps.setString(1, s.getImieNazwisko());
+        ps.setString(2, hashPair.left);
+        ps.setBytes(3,hashPair.right);
+        ps.setString(4,s.getPesel());
+        ps.setInt(5,s.getRok_studiow());
+        ps.setInt(6,s.getNralbumu());
     }
 
     public void updateGrades(int studentId, String grades, String ocenakoncowa, String przedmiotDb) throws SQLException {

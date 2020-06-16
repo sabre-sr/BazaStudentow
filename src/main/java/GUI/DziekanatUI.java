@@ -2,6 +2,7 @@ package GUI;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.SQLException;
 
 public class DziekanatUI extends JFrame{
     private JButton zarzadzanieStudentamiButton;
@@ -15,7 +16,11 @@ public class DziekanatUI extends JFrame{
         this.add(this.zarzadzaniePrzedmiotamiButton = new JButton("Zarzadzanie przedmiotami"));
         this.add(this.zarzadzanieProwadzącymiButton = new JButton("Zarzadzanie prowadzącymi"));
         this.zarzadzanieStudentamiButton.addActionListener(e -> {
-            new StudentLista();
+            try {
+                new StudentLista();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
         });
         this.zarzadzanieProwadzącymiButton.addActionListener(e -> {
             new ProwadzacyLista();
