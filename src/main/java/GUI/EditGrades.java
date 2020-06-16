@@ -11,8 +11,8 @@ import java.util.ArrayList;
 
 public class EditGrades extends JDialog implements Serializable {
 
-    private final JLabel nazwisko;
     private final JButton ok;
+    private final JLabel nazwisko;
     private final int studentId;
     private final JTextField srednia_input;
     private final JLabel srednia;
@@ -25,15 +25,15 @@ public class EditGrades extends JDialog implements Serializable {
         this.przedmiot = przedmiot;
         this.add(nazwisko = new JLabel(imienazwisko));
         this.ok = new JButton("Ok");
+        this.add(this.srednia = new JLabel("Ocena koncowa: (Obliczona srednia: " + Prowadzacy.srednia(oceny) + ")"));
+        this.add(this.srednia_input = new JTextField(ocenakoncowa, 3));
+        this.add(ok);
         this.ocenyField = new ArrayList<JTextField>();
         String[] tokens = oceny.split(" ");
         for (String i : tokens) {
             ocenyField.add(new JTextField(i, 3));
             this.add(ocenyField.get(ocenyField.size() - 1));
         }
-        this.add(this.srednia = new JLabel("Ocena koncowa: (Obliczona srednia: " + Prowadzacy.srednia(oceny) + ")"));
-        this.add(this.srednia_input = new JTextField(ocenakoncowa, 3));
-        this.add(ok);
         ok.addActionListener(e -> {
             StringBuilder temp = new StringBuilder();
             for (JTextField i : ocenyField) {
