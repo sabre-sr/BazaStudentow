@@ -78,7 +78,7 @@ public final class BazaDanych {
     }
 
 
-    public boolean addStudent(Student s, String haslo) throws SQLException, InvalidKeySpecException, NoSuchAlgorithmException {
+    public void addStudent(Student s, String haslo) throws SQLException, InvalidKeySpecException, NoSuchAlgorithmException {
         ps = conn.prepareStatement("INSERT INTO studenci(imienazwisko, passwordhash, " +
                 "salt, pesel, rokstudiow, nralbumu) VALUES (?, ?, ?, ?, ?, ?)");
         ImmutablePair<String, byte[]> hasla = Passwords.generateHashPair(haslo);
@@ -90,7 +90,6 @@ public final class BazaDanych {
         ps.setInt(6, s.getNralbumu());
         boolean result = ps.execute();
         conn.commit();
-        return result;
     }
 
     public boolean addProwadzacy(Prowadzacy p, String haslo) throws SQLException, InvalidKeySpecException, NoSuchAlgorithmException {
