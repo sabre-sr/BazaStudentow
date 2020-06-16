@@ -9,20 +9,28 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+/**
+ *
+ */
 public class OcenyGrupy extends JPanel {
     final String[] kolumny = {"ID", "Nazwisko", "Oceny", "Ocena Końcowa"};
     private Object[] data;
     DefaultTableModel tableModel;
+    private final JTable table;
 
-    public OcenyGrupy(ArrayList<ImmutableTriple<String, String, String>> oceny, ArrayList<Integer> id) {
+    /**
+     * @param oceny - lista ocen, gdzie lewa zmienna to imie i nazwisko; środkowa - lista ocen; prawa - ocena koncowa.
+     * @param id - lista identyfikatorów uczniów w bazie danych
+     */
+    public OcenyGrupy(ArrayList<ImmutableTriple<String, String, String>> oceny, ArrayList<Integer> id, String przedmiot) {
         super();
-        JTable table = buildTable(oceny, id);
+        this.table = buildTable(oceny, id);
         ListSelectionModel cellSelectionModel = table.getSelectionModel();
         cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         cellSelectionModel.addListSelectionListener(e -> {
-            new EditGrades();
-            //czeka az to wyzej sie zamknie
-            buildTable();
+            int row = table.getSelectedRow();
+            new EditGrades((int)this.table.getValueAt(row, 0), this.table.getValueAt(row, 1).toString(), this.table.getValueAt(row, 2).toString(), this.table.getValueAt(row, 3).toString(), przedmiot);
+            buildTable(oceny, id);
         });
         JScrollPane scrollPane = new JScrollPane(table);
         this.add(scrollPane, BorderLayout.CENTER);

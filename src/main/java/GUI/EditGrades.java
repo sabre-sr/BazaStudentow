@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class EditGrades extends JFrame implements Serializable {
+public class EditGrades extends JDialog implements Serializable {
 
     private final JLabel nazwisko;
     private final JButton ok;
@@ -19,7 +19,8 @@ public class EditGrades extends JFrame implements Serializable {
     private final ArrayList<JTextField> ocenyField;
     private final String przedmiot;
 
-    public EditGrades(String imienazwisko, String oceny, String ocenakoncowa, int studentId, String przedmiot) {
+    public EditGrades(int studentId, String imienazwisko, String oceny, String ocenakoncowa, String przedmiot) {
+        this.setModal(true);
         this.studentId = studentId;
         this.przedmiot = przedmiot;
         this.add(nazwisko = new JLabel(imienazwisko));
