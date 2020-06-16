@@ -18,7 +18,7 @@ public class StudentGUI extends JFrame {
         this.uzytkownik = student;
         this.add(this.imienazwisko = new JLabel("Zalogowany jako: " + uzytkownik.getImieNazwisko()));
         this.add(this.pesel = new JLabel("PESEL: " + uzytkownik.getPesel()));
-        this.getContentPane().add(new OcenyTabela(BazaDanych.bazaDanych.getGrades(uzytkownik.getId()),false));
+        this.getContentPane().add(new OcenyUcznia(BazaDanych.bazaDanych.getGrades(uzytkownik.getId()),false));
         this.pack();
         this.setSize(500, 500);
         this.setLayout(new FlowLayout());

@@ -10,11 +10,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class OcenyTabela extends JPanel {
+public class OcenyUcznia extends JPanel {
     String[] kolumny = {"Przedmiot", "Oceny", "Ocena Końcowa"};
     DefaultTableModel tableModel;
 
-    public OcenyTabela(ArrayList<ImmutablePair<String, ResultSet>> oceny, boolean editable) throws SQLException {
+    public OcenyUcznia(ArrayList<ImmutablePair<String, ResultSet>> oceny, boolean editable) throws SQLException {
         super();
         tableModel = new DefaultTableModel(kolumny,0){
             @Override

@@ -26,7 +26,7 @@ public class Prowadzacy extends Osoba{
     public void wystawOcene(Student student) throws SQLException {
         int id_student = (BazaDanych.bazaDanych.getStudent(student)).getInt("id");
         ResultSet rs = BazaDanych.bazaDanych.getGrade(id_student, this.przedmiot);
-        float srednia = srednia(rs);
+        float srednia = srednia(rs.getString("oceny"));
         rs.updateFloat("ocenakoncowa", srednia);
     }
 

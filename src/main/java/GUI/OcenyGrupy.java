@@ -1,33 +1,33 @@
 package GUI;
 
 import Models.Prowadzacy;
+import Services.BazaDanych;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
+import org.apache.commons.lang3.tuple.MutablePair;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.StringTokenizer;
 
-public class OcenyEdit extends JPanel {
+public class OcenyGrupy extends JPanel {
     String[] kolumny = {"ID", "Nazwisko", "Oceny", "Ocena Końcowa"};
+    Object[] data;
     DefaultTableModel tableModel;
 
-    public OcenyEdit(ArrayList<ImmutableTriple<String, String, String>> oceny, ArrayList<Integer> id) {
+    public OcenyGrupy(ArrayList<ImmutableTriple<String, String, String>> oceny, ArrayList<Integer> id) {
         super();
         tableModel = new DefaultTableModel(kolumny, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return column == 1 || column == 2;
+                return false;
             }
         };
         this.setLayout(new BorderLayout());
         JTable table = new JTable(tableModel);
         table.setAutoCreateRowSorter(true);
-        Object[] data;
         Iterator<ImmutableTriple<String, String, String>> immutableTripleIterator = oceny.iterator();
         Iterator<Integer> integerIterator = id.iterator();
         while (immutableTripleIterator.hasNext() && integerIterator.hasNext()) {
@@ -40,18 +40,15 @@ public class OcenyEdit extends JPanel {
         ListSelectionModel cellSelectionModel = table.getSelectionModel();
         cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        cellSelectionModel.addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                String output = null;
-                get
-            }
-        })
+        cellSelectionModel.addListSelectionListener(e -> {
+            String output = null;
+            get
+        });
         JScrollPane scrollPane = new JScrollPane(table);
         this.add(scrollPane, BorderLayout.CENTER);
     }
 
-    private String editGrades(String imienazwisko, String oceny, String ocenakoncowa) {
+    private ImmutablePair<String, String> editGrades(String imienazwisko, String oceny, String ocenakoncowa) {
         JLabel nazwisko = new JLabel(imienazwisko);
         JButton ok = new JButton("Ok");
         JFrame frame = new JFrame("Edycja");
@@ -60,9 +57,30 @@ public class OcenyEdit extends JPanel {
         String[] tokens = oceny.split(" ");
         for (String i : tokens) {
             ocenyField.add(new JTextField(i, 3));
-            frame.add(ocenyField.get(ocenyField.size()-1));
+            frame.add(ocenyField.get(ocenyField.size() - 1));
         }
-        JLabel srednia = new JLabel("Obliczona srednia: " + Prowadzacy.srednia(oceny));
-        JTextField srednia_input = new JTextField();
+        JLabel srednia = new JLabel("Ocena koncowa: (Obliczona srednia: " + Prowadzacy.srednia(oceny) + ")");
+        JTextField srednia_input = new JTextField(ocenakoncowa, 3);
+        frame.add(srednia);
+        frame.add(srednia_input);
+        frame.add(ok);
+        ok.addActionListener(e -> {
+            StringBuilder temp = new StringBuilder();
+            for (JTextField i : ocenyField) {
+                try {
+                    Float.parseFloat(i.getText());
+                    temp.append(i.getText()).append(" ");
+                } catch (NumberFormatException ignored) {}
+            }
+            MutablePair<String, String> pair = new MutablePair<>();
+            pair.left = temp.toString();
+            try {
+                Float.parseFloat(srednia_input.getText());
+                pair.right = srednia_input.getText();
+            } catch (NumberFormatException err) {
+                pair.right = ocenakoncowa;
+            }
+            BazaDanych.bazaDanych.set;
+        });
     }
 }
