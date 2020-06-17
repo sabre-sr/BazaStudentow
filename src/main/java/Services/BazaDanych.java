@@ -18,21 +18,21 @@ import org.jetbrains.annotations.NotNull;
 
 public final class BazaDanych {
     public static BazaDanych bazaDanych = new BazaDanych();
-    private Connection conn;
+    private static Connection conn;
     private PreparedStatement ps;
+    private ResultSet result;
 
-    private BazaDanych() throws SQLException {
+
+    private BazaDanych() {
         Connection conn = null;
         String path = "jdbc:sqlite:baza.db";
-        ps = conn.prepareStatement("Select * from studenci");
-        ps.closeOnCompletion();
         try {
             conn = DriverManager.getConnection(path);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
         if (conn != null)
-            this.conn = conn;
+            BazaDanych.conn = conn;
     }
 
     /**
@@ -49,30 +49,44 @@ public final class BazaDanych {
         }
     }
 
-    private void clearPreparedStatement() {
-
+    private void reopenConn() throws SQLException {
+//        if (ps == null||!ps.isClosed()) {
+//            assert ps != null;
+//            ps.close();
+//        }
+        conn.close();
+        String path = "jdbc:sqlite:baza.db";
+        try {
+            conn = DriverManager.getConnection(path);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
     public ResultSet getStudents() throws SQLException {
+        reopenConn();
         ps = conn.prepareStatement("SELECT * FROM studenci");
-        return ps.executeQuery();
+        return result = ps.executeQuery();
     }
 
     public ResultSet getProwadzacy() throws SQLException {
+        reopenConn();
         ps = conn.prepareStatement("SELECT * FROM prowadzacy");
-        return ps.executeQuery();
+        return result = ps.executeQuery();
     }
 
     public ResultSet getPrzedmioty() throws SQLException {
+        reopenConn();
         ps = conn.prepareStatement("SELECT * FROM przedmioty");
-        return ps.executeQuery();
+        return result = ps.executeQuery();
     }
 
     public Osoba logIn(String imienazwisko, @NotNull String haslo, String pozycja) throws SQLException, InvalidKeySpecException, NoSuchAlgorithmException, InvalidPESELException {
+        reopenConn();
         String query = String.format("SELECT * FROM %s WHERE (imienazwisko = ?)", pozycja);
         ps = conn.prepareStatement(query);
         ps.setString(1, imienazwisko);
-        ResultSet result = ps.executeQuery();
+        result = ps.executeQuery();
         if (!result.next())
             return null;
         String hash = result.getString("passwordhash");
@@ -95,6 +109,7 @@ public final class BazaDanych {
 
 
     public void addStudent(Student s, char[] haslo) throws SQLException, InvalidKeySpecException, NoSuchAlgorithmException {
+        reopenConn();
         ps = conn.prepareStatement("INSERT INTO studenci(imienazwisko, passwordhash, " +
                 "salt, pesel, rokstudiow, nralbumu) VALUES (?, ?, ?, ?, ?, ?)");
         ImmutablePair<String, byte[]> hasla = Passwords.generateHashPair(haslo);
@@ -104,7 +119,8 @@ public final class BazaDanych {
     }
 
     public boolean addProwadzacy(Prowadzacy p, char[] haslo) throws SQLException, InvalidKeySpecException, NoSuchAlgorithmException {
-        ps = conn.prepareStatement("INSERT INTO prowadzacy(imienazwisko, passwordhash, przedmiot, salt) VALUES (?, ?, ?, ?)", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
+        reopenConn();
+        ps = conn.prepareStatement("INSERT INTO prowadzacy(imienazwisko, passwordhash, przedmiot, salt) VALUES (?, ?, ?, ?)");
         ImmutablePair<String, byte[]> hasla = Passwords.generateHashPair(haslo);
         ps.setString(1, p.getImienazwisko());
         ps.setString(2, hasla.left);
@@ -116,6 +132,7 @@ public final class BazaDanych {
     }
 
     public boolean addDziekanat(Dziekanat dziekanat, char[] haslo) throws SQLException, InvalidKeySpecException, NoSuchAlgorithmException {
+        reopenConn();
         ps = conn.prepareStatement("INSERT INTO dziekanat(imienazwisko, passwordhash, salt) VALUES (?,?,?)");
         @NotNull ImmutablePair<String, byte[]> hasla = Passwords.generateHashPair(haslo);
         ps.setString(1, dziekanat.getImienazwisko());
@@ -125,18 +142,24 @@ public final class BazaDanych {
     }
 
     public ResultSet getStudent(Student s) throws SQLException {
+        ps.close();
         // TODO: jezeli nie wszystkie pola studenta sa podane, dodaj dwiazdki (*)
-        ps = conn.prepareStatement("SELECT * FROM studenci WHERE (?=?)");
+
         if (s.getNralbumu() != 0) {
-            ps.setString(1, "id");
-            ps.setInt(2, s.getNralbumu());
-        } else if (!s.getImieNazwisko().equals(""))
-            ps.setString(1, "imienazwisko");
-            ps.setString(2, s.getImieNazwisko());
-        return ps.executeQuery();
+            ps = conn.prepareStatement("SELECT * FROM studenci WHERE nralbumu=?");
+            ps.setInt(1, s.getNralbumu());
+        } else if (!s.getImieNazwisko().equals("")) {
+            ps = conn.prepareStatement("SELECT * FROM studenci WHERE imienazwisko=?");
+            ps.setString(1, s.getImieNazwisko());
+        }
+        result.close();
+        result = ps.executeQuery();
+        result.next();
+        return result;
     }
 
     public void editStudent (Student s, char[] haslo) throws SQLException, InvalidKeySpecException, NoSuchAlgorithmException {
+        reopenConn();
         ImmutablePair<String, byte[]> hashPair = Passwords.generateHashPair(haslo);
         ps = conn.prepareStatement("UPDATE studenci SET imienazwisko = ?, passwordhash = ?, salt = ?, pesel = ?, rokstudiow = ?, nralbumu = ? WHERE id = ?");
         bindStudentFields(s, hashPair);
@@ -154,6 +177,7 @@ public final class BazaDanych {
 
     public void updateGrades(int studentId, String grades, String ocenakoncowa, String przedmiotDb) throws SQLException {
         String query = "UPDATE " + przedmiotDb;
+        reopenConn();
         ps = conn.prepareStatement(query + " SET oceny ?, ocenakoncowa = ? WHERE id_stud = ?");
         ps.setString(1, grades);
         ps.setString(2, ocenakoncowa);
@@ -162,29 +186,32 @@ public final class BazaDanych {
     }
 
     public ArrayList<ImmutablePair<String, ResultSet>> getGrades(int student_id) throws SQLException {
+        reopenConn();
         ps = conn.prepareStatement("SELECT * FROM przedmioty");
-        ResultSet przedmioty = ps.executeQuery();
+        result = ps.executeQuery();
         ArrayList<ImmutablePair<String, ResultSet>> results = new ArrayList<>();
-        while (przedmioty.next()) {
-            String przedmiot = przedmioty.getString("nazwatabeli");
+        while (result.next()) {
+            String przedmiot = result.getString("nazwatabeli");
             System.out.println(przedmiot);
             String query = String.format("SELECT * FROM %s WHERE (id_stud = ?)", przedmiot);
             ps = conn.prepareStatement(query);
             ps.setInt(1, student_id);
             ResultSet oceny = ps.executeQuery();
-            results.add(new ImmutablePair<>(przedmioty.getString("nazwa"), oceny));
+            results.add(new ImmutablePair<>(result.getString("nazwa"), oceny));
         }
         return results;
     }
 
     public ResultSet getGrade(int student_id, String przedmiot) throws SQLException {
+        reopenConn();
         String query = String.format("SELECT * FROM %S WHERE (id_stud = ?)", przedmiot);
         ps = conn.prepareStatement(query);
         ps.setInt(1, student_id);
-        return ps.executeQuery();
+        return result = ps.executeQuery();
     }
 
     public ArrayList<Integer> getStudentIDList(String przedmiot) throws SQLException {
+        reopenConn();
         String query = String.format("SELECT * FROM %s", przedmiot);
         ps = conn.prepareStatement(query);
         ArrayList<Integer> out = new ArrayList<>();
@@ -195,6 +222,7 @@ public final class BazaDanych {
     }
 
     public ArrayList<ImmutableTriple<String, String, String>> getGradeList(String przedmiot) throws SQLException {
+        reopenConn();
         String query = String.format("SELECT * FROM %s", przedmiot);
         ps = conn.prepareStatement(query);
         ArrayList<ImmutableTriple<String, String, String>> out = new ArrayList<>();
@@ -211,6 +239,7 @@ public final class BazaDanych {
     }
 
     public void addPrzedmiot(String przedmiot) throws SQLException {
+        reopenConn();
         String tabelanazwa = WordUtils.capitalizeFully(przedmiot, ' ').replaceAll(" ", "");
         String sql = String.format("create table %s\n" +
                 "(\n" +
@@ -235,6 +264,7 @@ public final class BazaDanych {
     }
 
     public void removeStudent(@NotNull ResultSet student) throws SQLException {
+        reopenConn();
         student.deleteRow();
         conn.commit();
     }

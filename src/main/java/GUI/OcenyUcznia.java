@@ -29,6 +29,7 @@ public class OcenyUcznia extends JPanel {
         for (ImmutablePair<String, ResultSet> i : oceny) {
             data = new Object[]{i.left, i.right.getString("oceny"), i.right.getString("ocenakoncowa")};
             tableModel.addRow(data);
+            i.right.close();
         }
         table.setFillsViewportHeight(true);
         JScrollPane scrollPane = new JScrollPane(table);

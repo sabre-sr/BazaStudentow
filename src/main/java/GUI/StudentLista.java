@@ -29,6 +29,7 @@ public class StudentLista extends JPanel {
     }
 
     public void loadData() throws SQLException {
+        tableModel.setRowCount(0);
         this.table = new JTable(tableModel);
         table.setAutoCreateRowSorter(true);
         Object[] data;
@@ -37,6 +38,7 @@ public class StudentLista extends JPanel {
             data = new Object[]{rs.getInt("id"), rs.getString("imienazwisko"), rs.getString("pesel"), rs.getInt("rokstudiow"), rs.getInt("nralbumu")};
             tableModel.addRow(data);
         }
+//        rs.close();
     }
 
     public static void main(String[] args) throws SQLException {

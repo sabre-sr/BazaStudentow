@@ -38,7 +38,6 @@ public class Student extends Osoba {
     }
 
     public static Student createStudent(ResultSet resultSet) throws SQLException, InvalidPESELException {
-        resultSet.next();
         Student student = new Student(resultSet.getString("imienazwisko"), resultSet.getString("pesel"), resultSet.getInt("nralbumu"), resultSet.getInt("rokstudiow"));
         student.setId(resultSet.getInt("id"));
         return student;
@@ -80,7 +79,7 @@ public class Student extends Osoba {
         return out.toString();
     }
 
-    public static void main(String[] args) throws InvalidKeySpecException, SQLException, NoSuchAlgorithmException {
+    public static void main(String[] args) {
         BazaDanych.bazaDanych.main(null);
     }
 }

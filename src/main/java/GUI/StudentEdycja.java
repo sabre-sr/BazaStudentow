@@ -21,11 +21,11 @@ public class StudentEdycja extends JDialog {
     public StudentEdycja() {
         this.setModal(true);
         this.add(this.imienazwisko_label = new JLabel("Imie i nazwisko "));
-        this.add(this.imienazwisko = new JTextField());
+        this.add(this.imienazwisko = new JTextField(7));
         this.add(this.pesel_label = new JLabel("PESEL: "));
-        this.add(this.pesel = new JTextField());
+        this.add(this.pesel = new JTextField(10));
         this.add(this.rokstudiow_label = new JLabel("Rok studiow: "));
-        this.add(this.rokstudiow = new JTextField());
+        this.add(this.rokstudiow = new JTextField(5));
         this.add(this.nralbumu_label = new JLabel("Nr albumu: "));
         this.add(this.nralbumu = new JTextField(6));
         this.add(this.haslo_label = new JLabel("Haslo: "));
@@ -43,7 +43,7 @@ public class StudentEdycja extends JDialog {
         this.add(this.pesel_label = new JLabel("PESEL: "));
         this.add(this.pesel = new JTextField(student.getPesel()));
         this.add(this.rokstudiow_label = new JLabel("Rok studiow: "));
-        this.add(this.rokstudiow = new JTextField(student.getRok_studiow()));
+        this.add(this.rokstudiow = new JTextField(Integer.toString(student.getRok_studiow()),3));
         this.add(this.nralbumu_label = new JLabel("Nr albumu: "));
         this.add(this.nralbumu = new JTextField(Integer.toString(student.getNralbumu()), 6));
         this.add(this.haslo_label = new JLabel("Haslo: "));
@@ -60,14 +60,16 @@ public class StudentEdycja extends JDialog {
         this.pack();
         this.setSize(200, 250);
         this.setVisible(true);
+        this.anuluj.addActionListener(e -> {
+            this.dispose();
+        });
         this.ok.addActionListener(e -> {
             try {
+                Student temp = new Student(imienazwisko.getText(), pesel.getText(), Integer.parseInt(nralbumu.getText()),Integer.parseInt(rokstudiow.getText()));
                 if (this.id != 0) {
-                    Student temp = new Student(imienazwisko.getText(), pesel.getText(), Integer.parseInt(nralbumu.getText()),Integer.parseInt(rokstudiow.getText()));
                     BazaDanych.bazaDanych.addStudent(temp, haslo.getPassword());
                 }
                 else {
-                    Student temp = new Student(imienazwisko.getText(), pesel.getText(), Integer.parseInt(nralbumu.getText()),Integer.parseInt(rokstudiow.getText()));
                     if (haslo.getPassword().length == 0) {
                         BazaDanych.bazaDanych.editStudent(temp, new char[]{'\0'});
                     }
@@ -85,13 +87,9 @@ public class StudentEdycja extends JDialog {
             }
 
         });
-        this.anuluj.addActionListener(e -> this.dispose());
     }
 
     public static void main(String[] args) {
-        try {
-            new StudentEdycja(new Student("", "",0, 0));
-        } catch (InvalidPESELException ignored) {
-        }
+            new StudentEdycja();
     }
 }
