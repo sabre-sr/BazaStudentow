@@ -29,6 +29,10 @@ public class Student extends Osoba {
         return nralbumu;
     }
 
+    public void setNralbumu(int nralbumu) {
+        this.nralbumu = nralbumu;
+    }
+
     public String getImieNazwisko() {
         return super.getImienazwisko();
     }

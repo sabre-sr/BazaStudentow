@@ -62,8 +62,17 @@ public class StudentEdycja extends JDialog {
         this.setVisible(true);
         this.ok.addActionListener(e -> {
             try {
-                Student temp = new Student(imienazwisko.getText(), pesel.getText(), Integer.parseInt(nralbumu.getText()),Integer.parseInt(rokstudiow.getText()));
-                BazaDanych.bazaDanych.addStudent(temp, haslo.getPassword());
+                if (this.id != 0) {
+                    Student temp = new Student(imienazwisko.getText(), pesel.getText(), Integer.parseInt(nralbumu.getText()),Integer.parseInt(rokstudiow.getText()));
+                    BazaDanych.bazaDanych.addStudent(temp, haslo.getPassword());
+                }
+                else {
+                    Student temp = new Student(imienazwisko.getText(), pesel.getText(), Integer.parseInt(nralbumu.getText()),Integer.parseInt(rokstudiow.getText()));
+                    if (haslo.getPassword().length == 0) {
+                        BazaDanych.bazaDanych.editStudent(temp, new char[]{'\0'});
+                    }
+                    else BazaDanych.bazaDanych.editStudent(temp, haslo.getPassword());
+                }
             } catch (NumberFormatException err) {
                 JOptionPane.showMessageDialog(null, "Pola zawierają nieprawidłowe dane. Popraw je.");
             } catch (InvalidPESELException peselException) {
@@ -76,9 +85,7 @@ public class StudentEdycja extends JDialog {
             }
 
         });
-        this.anuluj.addActionListener(e -> {
-            this.dispose();
-        });
+        this.anuluj.addActionListener(e -> this.dispose());
     }
 
     public static void main(String[] args) {

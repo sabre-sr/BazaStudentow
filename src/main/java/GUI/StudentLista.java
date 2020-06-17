@@ -10,9 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class StudentLista extends JPanel {
-//    private final JButton znajdz;
-    private final JTable table;
-//    private final JButton dodaj, edytuj, karta;
+    public JTable table;
     String[] kolumny = {"ID", "Imie i Nazwisko", "PESEL", "Rok studiow", "Nr albumu"};
     DefaultTableModel tableModel;
     public StudentLista() throws SQLException {
@@ -24,29 +22,15 @@ public class StudentLista extends JPanel {
             }
         };
         this.setLayout(new BorderLayout());
-        this.table = new JTable(tableModel);
-        table.setAutoCreateRowSorter(true);
         loadData();
         table.setFillsViewportHeight(true);
         JScrollPane scrollPane = new JScrollPane(table);
         this.add(scrollPane, BorderLayout.CENTER);
-
-//        this.add(this.dodaj = new JButton("Dodaj"));
-//        this.add(this.edytuj = new JButton("Edytuj"));
-//        this.add(this.znajdz = new JButton("Znajdz"));
-//        this.add(this.karta = new JButton("Karta studenta"));
-//        this.dodaj.addActionListener(e -> {
-//            new StudentEdycja();
-//            try {
-//
-//            } catch (SQLException throwables) {
-//                JOptionPane.showMessageDialog(null, "Wystąpił problem z ładowaniem zawartości bazy.");
-//                throwables.printStackTrace();
-//            }
-//        });
     }
 
-    private void loadData() throws SQLException {
+    public void loadData() throws SQLException {
+        this.table = new JTable(tableModel);
+        table.setAutoCreateRowSorter(true);
         Object[] data;
         ResultSet rs = BazaDanych.bazaDanych.getStudents();
         while (rs.next()) {
@@ -54,10 +38,6 @@ public class StudentLista extends JPanel {
             tableModel.addRow(data);
         }
     }
-
-//    private void loadData() throws SQLException {
-//
-//    }
 
     public static void main(String[] args) throws SQLException {
         JFrame frame = new JFrame();

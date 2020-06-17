@@ -187,7 +187,7 @@ public final class BazaDanych {
             ps.setInt(1, resultSet.getInt("id_stud"));
             uczniowie = ps.executeQuery();
             uczniowie.next();
-            out.add(new ImmutableTriple<String, String, String>(uczniowie.getString("imienazwisko"), resultSet.getString("oceny"), resultSet.getString("ocenakoncowa")));
+            out.add(new ImmutableTriple<>(uczniowie.getString("imienazwisko"), resultSet.getString("oceny"), resultSet.getString("ocenakoncowa")));
         }
         return out;
     }
@@ -221,7 +221,7 @@ public final class BazaDanych {
         conn.commit();
     }
 
-    public void main(String[] args) throws SQLException, InvalidKeySpecException, NoSuchAlgorithmException {
+    public void main(String[] args) {
 //        ImmutablePair<String, byte[]> hashPair = Passwords.generateHashPair("[1, 2, 3]");
 //        ps = conn.prepareStatement("UPDATE studenci SET passwordhash = ?, salt = ? WHERE imienazwisko = 'Jan Kowalski'");
 //        ps.setString(1, hashPair.left);
