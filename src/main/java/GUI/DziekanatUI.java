@@ -12,8 +12,8 @@ public class DziekanatUI extends JFrame {
         this.add(zarzadzanieStudentamiButton = new JButton("Zarządzanie studentami"));
         JButton zarzadzaniePrzedmiotamiButton;
         this.add(zarzadzaniePrzedmiotamiButton = new JButton("Zarzadzanie przedmiotami"));
-        JButton zarzadzanieProwadzącymiButton;
-        this.add(zarzadzanieProwadzącymiButton = new JButton("Zarzadzanie prowadzącymi"));
+        JButton zarzadzanieProwadzacymiButton;
+        this.add(zarzadzanieProwadzacymiButton = new JButton("Zarzadzanie prowadzącymi"));
         zarzadzanieStudentamiButton.addActionListener(e -> {
             try {
                 new StudentManagement();
@@ -21,9 +21,9 @@ public class DziekanatUI extends JFrame {
                 throwables.printStackTrace();
             }
         });
-        zarzadzanieProwadzącymiButton.addActionListener(e -> {
+        zarzadzanieProwadzacymiButton.addActionListener(e -> {
             try {
-                new ProwadzacyLista();
+                new ProwadzacyManagement();
             } catch (SQLException throwables) {
                 JOptionPane.showMessageDialog(null, "Błąd dostępu do SQL");
                 throwables.printStackTrace();

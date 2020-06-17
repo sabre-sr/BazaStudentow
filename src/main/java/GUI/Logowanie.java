@@ -10,7 +10,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.sql.SQLException;
 import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class Logowanie extends JFrame {
     JTextField login;

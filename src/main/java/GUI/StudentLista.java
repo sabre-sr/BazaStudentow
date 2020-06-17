@@ -1,7 +1,7 @@
 package GUI;
 
 import Services.BazaDanych;
-import org.apache.commons.lang3.tuple.ImmutablePair;
+import Utils.TableTools;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -21,24 +21,21 @@ public class StudentLista extends JPanel {
                 return false;
             }
         };
-        this.setLayout(new BorderLayout());
+        table = new JTable(tableModel);
         loadData();
+        this.setLayout(new BorderLayout());
         table.setFillsViewportHeight(true);
         JScrollPane scrollPane = new JScrollPane(table);
         this.add(scrollPane, BorderLayout.CENTER);
     }
 
     public void loadData() throws SQLException {
+        this.loadData(BazaDanych.bazaDanych.getStudents());
+    }
+
+    public void loadData(ResultSet rs) throws SQLException {
         tableModel.setRowCount(0);
-        this.table = new JTable(tableModel);
-        table.setAutoCreateRowSorter(true);
-        Object[] data;
-        ResultSet rs = BazaDanych.bazaDanych.getStudents();
-        while (rs.next()) {
-            data = new Object[]{rs.getInt("id"), rs.getString("imienazwisko"), rs.getString("pesel"), rs.getInt("rokstudiow"), rs.getInt("nralbumu")};
-            tableModel.addRow(data);
-        }
-//        rs.close();
+        TableTools.fillTable(rs, tableModel, table, "student");
     }
 
     public static void main(String[] args) throws SQLException {

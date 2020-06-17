@@ -3,7 +3,6 @@ package GUI;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import javax.swing.*;
-import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.sql.ResultSet;
@@ -14,7 +13,7 @@ public class OcenyUcznia extends JPanel {
     String[] kolumny = {"Przedmiot", "Oceny", "Ocena Końcowa"};
     DefaultTableModel tableModel;
 
-    public OcenyUcznia(ArrayList<ImmutablePair<String, ResultSet>> oceny, boolean editable) throws SQLException {
+    public OcenyUcznia(ArrayList<ImmutablePair<String, ResultSet>> oceny) throws SQLException {
         super();
         tableModel = new DefaultTableModel(kolumny,0){
             @Override

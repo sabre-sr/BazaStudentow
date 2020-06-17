@@ -20,22 +20,18 @@ public class ProwadzacyLista extends JPanel{
                 return false;
             }
         };
-        this.setLayout(new BorderLayout());
+        table = new JTable(tableModel);
         loadData();
+        this.setLayout(new BorderLayout());
         table.setFillsViewportHeight(true);
         JScrollPane scrollPane = new JScrollPane(table);
         this.add(scrollPane, BorderLayout.CENTER);
     }
 
-    private void loadData() throws SQLException {
-        this.table = new JTable(tableModel);
-        table.setAutoCreateRowSorter(true);
-        Object[] data;
+    public void loadData() throws SQLException {
+        tableModel.setRowCount(0);
         ResultSet rs = BazaDanych.bazaDanych.getProwadzacy();
-        while (rs.next()) {
-            data = new Object[]{rs.getInt("id"), rs.getString("imienazwisko"), rs.getString("przedmiot")};
-            tableModel.addRow(data);
-        }
+        Utils.TableTools.fillTable(rs, tableModel, table, "prowadzacy");
     }
 
     public static void main(String[] args) throws SQLException {

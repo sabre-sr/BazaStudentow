@@ -113,9 +113,10 @@ public final class BazaDanych {
         ps = conn.prepareStatement("INSERT INTO studenci(imienazwisko, passwordhash, " +
                 "salt, pesel, rokstudiow, nralbumu) VALUES (?, ?, ?, ?, ?, ?)");
         ImmutablePair<String, byte[]> hasla = Passwords.generateHashPair(haslo);
-        bindStudentFields(s, hasla);
+        ps.setString(2, hasla.left);
+        ps.setBytes(3,hasla.right);
+        bindStudentFields(s);
         boolean result = ps.execute();
-        conn.commit();
     }
 
     public boolean addProwadzacy(Prowadzacy p, char[] haslo) throws SQLException, InvalidKeySpecException, NoSuchAlgorithmException {
@@ -131,28 +132,30 @@ public final class BazaDanych {
         return result;
     }
 
-    public boolean addDziekanat(Dziekanat dziekanat, char[] haslo) throws SQLException, InvalidKeySpecException, NoSuchAlgorithmException {
+    public void addDziekanat(Dziekanat dziekanat, char[] haslo) throws SQLException, InvalidKeySpecException, NoSuchAlgorithmException {
         reopenConn();
         ps = conn.prepareStatement("INSERT INTO dziekanat(imienazwisko, passwordhash, salt) VALUES (?,?,?)");
         @NotNull ImmutablePair<String, byte[]> hasla = Passwords.generateHashPair(haslo);
         ps.setString(1, dziekanat.getImienazwisko());
         ps.setString(2, hasla.left);
         ps.setBytes(3, hasla.right);
-        return ps.execute();
+        ps.execute();
     }
 
     public ResultSet getStudent(Student s) throws SQLException {
-        ps.close();
+        reopenConn();
         // TODO: jezeli nie wszystkie pola studenta sa podane, dodaj dwiazdki (*)
-
-        if (s.getNralbumu() != 0) {
+        if (s.getId() != 0) {
+            ps = conn.prepareStatement("SELECT * FROM studenci WHERE id=?");
+            ps.setInt(1, s.getId());
+        }
+        else if (s.getNralbumu() != 0) {
             ps = conn.prepareStatement("SELECT * FROM studenci WHERE nralbumu=?");
             ps.setInt(1, s.getNralbumu());
         } else if (!s.getImieNazwisko().equals("")) {
             ps = conn.prepareStatement("SELECT * FROM studenci WHERE imienazwisko=?");
             ps.setString(1, s.getImieNazwisko());
         }
-        result.close();
         result = ps.executeQuery();
         result.next();
         return result;
@@ -160,16 +163,37 @@ public final class BazaDanych {
 
     public void editStudent (Student s, char[] haslo) throws SQLException, InvalidKeySpecException, NoSuchAlgorithmException {
         reopenConn();
-        ImmutablePair<String, byte[]> hashPair = Passwords.generateHashPair(haslo);
-        ps = conn.prepareStatement("UPDATE studenci SET imienazwisko = ?, passwordhash = ?, salt = ?, pesel = ?, rokstudiow = ?, nralbumu = ? WHERE id = ?");
-        bindStudentFields(s, hashPair);
+        System.out.println(haslo);
+        if (haslo[0] != '\0') {
+            ps = conn.prepareStatement("UPDATE studenci SET imienazwisko = ?, passwordhash = ?, salt = ?, pesel = ?, rokstudiow = ?, nralbumu = ? WHERE id = ?");
+            ImmutablePair<String, byte[]> hashPair = Passwords.generateHashPair(haslo);
+            ps.setString(2, hashPair.left);
+            ps.setBytes(3, hashPair.right);
+        }
+        else
+            ps = conn.prepareStatement("UPDATE studenci SET imienazwisko = ?, pesel = ?, rokstudiow = ?, nralbumu = ? WHERE id = ?");
         ps.setInt(7,s.getId());
+        bindStudentFields(s);
     }
 
-    private void bindStudentFields(Student s, ImmutablePair<String, byte[]> hashPair) throws SQLException {
+    public void editProwadzacy (Prowadzacy p, char[] haslo) throws SQLException, InvalidKeySpecException, NoSuchAlgorithmException {
+        reopenConn();
+        System.out.println(haslo);
+        if (haslo[0] != '\0') {
+            ps = conn.prepareStatement("UPDATE prowadzacy SET imienazwisko = ?, passwordhash = ?, salt = ?, przedmiot = ? WHERE id = ?");
+            ImmutablePair<String, byte[]> hashPair = Passwords.generateHashPair(haslo);
+            ps.setString(2, hashPair.left);
+            ps.setBytes(3, hashPair.right);
+        }
+        else
+            ps = conn.prepareStatement("UPDATE prowadzacy SET imienazwisko = ?, przedmiot = ? WHERE id = ?");
+        ps.setString(1, p.getImienazwisko());
+        ps.setString(4, p.getPrzedmiot());
+        ps.setInt(5,p.getId());
+    }
+
+    private void bindStudentFields(Student s) throws SQLException {
         ps.setString(1, s.getImieNazwisko());
-        ps.setString(2, hashPair.left);
-        ps.setBytes(3,hashPair.right);
         ps.setString(4,s.getPesel());
         ps.setInt(5,s.getRok_studiow());
         ps.setInt(6,s.getNralbumu());
@@ -263,10 +287,18 @@ public final class BazaDanych {
         conn.commit();
     }
 
-    public void removeStudent(@NotNull ResultSet student) throws SQLException {
+    public void removeStudent(int id) throws SQLException {
         reopenConn();
-        student.deleteRow();
-        conn.commit();
+        ps = conn.prepareStatement("DELETE FROM studenci WHERE id=?");
+        ps.setInt(1,id);
+        ps.execute();
+    }
+
+    public void removeProwadzacy(int id) throws SQLException {
+        reopenConn();
+        ps = conn.prepareStatement("DELETE FROM prowadzacy WHERE id=?");
+        ps.setInt(1,id);
+        ps.execute();
     }
 
     public void main(String[] args) {

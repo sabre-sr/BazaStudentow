@@ -39,7 +39,7 @@ public class Dziekanat extends Osoba {
 
     public void removeStudent(Student student) throws SQLException {
         ResultSet query = BazaDanych.bazaDanych.getStudent(student);
-        BazaDanych.bazaDanych.removeStudent(query);
+        BazaDanych.bazaDanych.removeStudent(query.getInt("id"));
     }
 
     public static void main(String[] args) throws InvalidKeySpecException, SQLException, NoSuchAlgorithmException {

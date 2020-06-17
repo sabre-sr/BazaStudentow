@@ -10,6 +10,7 @@ import java.awt.*;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.sql.SQLException;
+import java.util.Arrays;
 
 public class StudentEdycja extends JDialog {
     JLabel imienazwisko_label, pesel_label, rokstudiow_label, nralbumu_label, haslo_label;
@@ -39,9 +40,9 @@ public class StudentEdycja extends JDialog {
     public StudentEdycja(Student student) {
         this.setModal(true);
         this.add(this.imienazwisko_label = new JLabel("Imie i nazwisko "));
-        this.add(this.imienazwisko = new JTextField(student.getImieNazwisko()));
+        this.add(this.imienazwisko = new JTextField(student.getImieNazwisko(),7));
         this.add(this.pesel_label = new JLabel("PESEL: "));
-        this.add(this.pesel = new JTextField(student.getPesel()));
+        this.add(this.pesel = new JTextField(student.getPesel(),10));
         this.add(this.rokstudiow_label = new JLabel("Rok studiow: "));
         this.add(this.rokstudiow = new JTextField(Integer.toString(student.getRok_studiow()),3));
         this.add(this.nralbumu_label = new JLabel("Nr albumu: "));
@@ -59,21 +60,23 @@ public class StudentEdycja extends JDialog {
         this.setLayout(new FlowLayout());
         this.pack();
         this.setSize(200, 250);
-        this.setVisible(true);
         this.anuluj.addActionListener(e -> {
             this.dispose();
         });
         this.ok.addActionListener(e -> {
             try {
                 Student temp = new Student(imienazwisko.getText(), pesel.getText(), Integer.parseInt(nralbumu.getText()),Integer.parseInt(rokstudiow.getText()));
-                if (this.id != 0) {
-                    BazaDanych.bazaDanych.addStudent(temp, haslo.getPassword());
+                if (this.id == 0) {
+                    BazaDanych.bazaDanych.addStudent(temp, Arrays.toString(haslo.getPassword()).toCharArray());
+                    this.dispose();
                 }
                 else {
                     if (haslo.getPassword().length == 0) {
                         BazaDanych.bazaDanych.editStudent(temp, new char[]{'\0'});
+                        this.dispose();
                     }
-                    else BazaDanych.bazaDanych.editStudent(temp, haslo.getPassword());
+                    else BazaDanych.bazaDanych.editStudent(temp, Arrays.toString(haslo.getPassword()).toCharArray());
+                    this.dispose();
                 }
             } catch (NumberFormatException err) {
                 JOptionPane.showMessageDialog(null, "Pola zawierają nieprawidłowe dane. Popraw je.");
@@ -85,8 +88,8 @@ public class StudentEdycja extends JDialog {
                 JOptionPane.showMessageDialog(null, "Problem z dodaniem do bazy danych.");
                 throwables.printStackTrace();
             }
-
         });
+        this.setVisible(true);
     }
 
     public static void main(String[] args) {
