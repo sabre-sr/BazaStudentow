@@ -55,7 +55,7 @@ public class StudentEdycja extends JDialog {
     }
 
     private void armWindow() {
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         this.setLayout(new FlowLayout());
         this.pack();
         this.setSize(200, 250);

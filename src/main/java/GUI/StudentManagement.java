@@ -51,6 +51,8 @@ public class StudentManagement extends JFrame {
         });
     }
 
+
+
     public static void main(String[] args) throws SQLException {
         new StudentManagement();
     }

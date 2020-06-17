@@ -38,6 +38,7 @@ public class Student extends Osoba {
     }
 
     public static Student createStudent(ResultSet resultSet) throws SQLException, InvalidPESELException {
+        resultSet.next();
         Student student = new Student(resultSet.getString("imienazwisko"), resultSet.getString("pesel"), resultSet.getInt("nralbumu"), resultSet.getInt("rokstudiow"));
         student.setId(resultSet.getInt("id"));
         return student;

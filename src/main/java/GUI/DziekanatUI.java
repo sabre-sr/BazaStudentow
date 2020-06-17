@@ -4,29 +4,38 @@ import javax.swing.*;
 import java.awt.*;
 import java.sql.SQLException;
 
-public class DziekanatUI extends JFrame{
-    private JButton zarzadzanieStudentamiButton;
-    private JButton zarzadzaniePrzedmiotamiButton;
-    private JButton zarzadzanieProwadzącymiButton;
-    private JButton zarzadzanieDziekanatemButton;
+public class DziekanatUI extends JFrame {
 
     public DziekanatUI() {
         super("Dziekanat");
-        this.add(this.zarzadzanieStudentamiButton = new JButton("Zarządzanie studentami"));
-        this.add(this.zarzadzaniePrzedmiotamiButton = new JButton("Zarzadzanie przedmiotami"));
-        this.add(this.zarzadzanieProwadzącymiButton = new JButton("Zarzadzanie prowadzącymi"));
-        this.zarzadzanieStudentamiButton.addActionListener(e -> {
+        JButton zarzadzanieStudentamiButton;
+        this.add(zarzadzanieStudentamiButton = new JButton("Zarządzanie studentami"));
+        JButton zarzadzaniePrzedmiotamiButton;
+        this.add(zarzadzaniePrzedmiotamiButton = new JButton("Zarzadzanie przedmiotami"));
+        JButton zarzadzanieProwadzącymiButton;
+        this.add(zarzadzanieProwadzącymiButton = new JButton("Zarzadzanie prowadzącymi"));
+        zarzadzanieStudentamiButton.addActionListener(e -> {
             try {
-                new StudentLista();
+                new StudentManagement();
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
         });
-        this.zarzadzanieProwadzącymiButton.addActionListener(e -> {
-            new ProwadzacyLista();
+        zarzadzanieProwadzącymiButton.addActionListener(e -> {
+            try {
+                new ProwadzacyLista();
+            } catch (SQLException throwables) {
+                JOptionPane.showMessageDialog(null, "Błąd dostępu do SQL");
+                throwables.printStackTrace();
+            }
         });
-        this.zarzadzaniePrzedmiotamiButton.addActionListener(e -> {
-            new PrzedmiotLista();
+        zarzadzaniePrzedmiotamiButton.addActionListener(e -> {
+            try {
+                new PrzedmiotLista();
+            } catch (SQLException throwables) {
+                JOptionPane.showMessageDialog(null, "Błąd dostępu do SQL");
+                throwables.printStackTrace();
+            }
         });
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(new FlowLayout());

@@ -21,9 +21,11 @@ public final class BazaDanych {
     private Connection conn;
     private PreparedStatement ps;
 
-    private BazaDanych() {
+    private BazaDanych() throws SQLException {
         Connection conn = null;
         String path = "jdbc:sqlite:baza.db";
+        ps = conn.prepareStatement("Select * from studenci");
+        ps.closeOnCompletion();
         try {
             conn = DriverManager.getConnection(path);
         } catch (SQLException throwables) {
@@ -47,8 +49,22 @@ public final class BazaDanych {
         }
     }
 
+    private void clearPreparedStatement() {
+
+    }
+
     public ResultSet getStudents() throws SQLException {
         ps = conn.prepareStatement("SELECT * FROM studenci");
+        return ps.executeQuery();
+    }
+
+    public ResultSet getProwadzacy() throws SQLException {
+        ps = conn.prepareStatement("SELECT * FROM prowadzacy");
+        return ps.executeQuery();
+    }
+
+    public ResultSet getPrzedmioty() throws SQLException {
+        ps = conn.prepareStatement("SELECT * FROM przedmioty");
         return ps.executeQuery();
     }
 
@@ -112,9 +128,11 @@ public final class BazaDanych {
         // TODO: jezeli nie wszystkie pola studenta sa podane, dodaj dwiazdki (*)
         ps = conn.prepareStatement("SELECT * FROM studenci WHERE (?=?)");
         if (s.getNralbumu() != 0) {
-            ps.setInt(1, s.getNralbumu());
+            ps.setString(1, "id");
+            ps.setInt(2, s.getNralbumu());
         } else if (!s.getImieNazwisko().equals(""))
-            ps.setString(1, s.getImieNazwisko());
+            ps.setString(1, "imienazwisko");
+            ps.setString(2, s.getImieNazwisko());
         return ps.executeQuery();
     }
 
