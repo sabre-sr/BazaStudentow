@@ -114,12 +114,12 @@ public final class BazaDanych {
                 "salt, pesel, rokstudiow, nralbumu) VALUES (?, ?, ?, ?, ?, ?)");
         ImmutablePair<String, byte[]> hasla = Passwords.generateHashPair(haslo);
         ps.setString(2, hasla.left);
-        ps.setBytes(3,hasla.right);
+        ps.setBytes(3, hasla.right);
         bindStudentFields(s);
-        boolean result = ps.execute();
+        ps.execute();
     }
 
-    public boolean addProwadzacy(Prowadzacy p, char[] haslo) throws SQLException, InvalidKeySpecException, NoSuchAlgorithmException {
+    public void addProwadzacy(Prowadzacy p, char[] haslo) throws SQLException, InvalidKeySpecException, NoSuchAlgorithmException {
         reopenConn();
         ps = conn.prepareStatement("INSERT INTO prowadzacy(imienazwisko, passwordhash, przedmiot, salt) VALUES (?, ?, ?, ?)");
         ImmutablePair<String, byte[]> hasla = Passwords.generateHashPair(haslo);
@@ -127,9 +127,7 @@ public final class BazaDanych {
         ps.setString(2, hasla.left);
         ps.setString(3, p.getPrzedmiot());
         ps.setBytes(4, hasla.right);
-        boolean result = ps.execute();
-        conn.commit();
-        return result;
+        ps.execute();
     }
 
     public void addDziekanat(Dziekanat dziekanat, char[] haslo) throws SQLException, InvalidKeySpecException, NoSuchAlgorithmException {
@@ -148,8 +146,7 @@ public final class BazaDanych {
         if (s.getId() != 0) {
             ps = conn.prepareStatement("SELECT * FROM studenci WHERE id=?");
             ps.setInt(1, s.getId());
-        }
-        else if (s.getNralbumu() != 0) {
+        } else if (s.getNralbumu() != 0) {
             ps = conn.prepareStatement("SELECT * FROM studenci WHERE nralbumu=?");
             ps.setInt(1, s.getNralbumu());
         } else if (!s.getImieNazwisko().equals("")) {
@@ -161,7 +158,7 @@ public final class BazaDanych {
         return result;
     }
 
-    public void editStudent (Student s, char[] haslo) throws SQLException, InvalidKeySpecException, NoSuchAlgorithmException {
+    public void editStudent(Student s, char[] haslo) throws SQLException, InvalidKeySpecException, NoSuchAlgorithmException {
         reopenConn();
         System.out.println(haslo);
         if (haslo[0] != '\0') {
@@ -169,14 +166,13 @@ public final class BazaDanych {
             ImmutablePair<String, byte[]> hashPair = Passwords.generateHashPair(haslo);
             ps.setString(2, hashPair.left);
             ps.setBytes(3, hashPair.right);
-        }
-        else
+        } else
             ps = conn.prepareStatement("UPDATE studenci SET imienazwisko = ?, pesel = ?, rokstudiow = ?, nralbumu = ? WHERE id = ?");
-        ps.setInt(7,s.getId());
+        ps.setInt(7, s.getId());
         bindStudentFields(s);
     }
 
-    public void editProwadzacy (Prowadzacy p, char[] haslo) throws SQLException, InvalidKeySpecException, NoSuchAlgorithmException {
+    public void editProwadzacy(Prowadzacy p, char[] haslo) throws SQLException, InvalidKeySpecException, NoSuchAlgorithmException {
         reopenConn();
         System.out.println(haslo);
         if (haslo[0] != '\0') {
@@ -184,19 +180,18 @@ public final class BazaDanych {
             ImmutablePair<String, byte[]> hashPair = Passwords.generateHashPair(haslo);
             ps.setString(2, hashPair.left);
             ps.setBytes(3, hashPair.right);
-        }
-        else
+        } else
             ps = conn.prepareStatement("UPDATE prowadzacy SET imienazwisko = ?, przedmiot = ? WHERE id = ?");
         ps.setString(1, p.getImienazwisko());
         ps.setString(4, p.getPrzedmiot());
-        ps.setInt(5,p.getId());
+        ps.setInt(5, p.getId());
     }
 
     private void bindStudentFields(Student s) throws SQLException {
         ps.setString(1, s.getImieNazwisko());
-        ps.setString(4,s.getPesel());
-        ps.setInt(5,s.getRok_studiow());
-        ps.setInt(6,s.getNralbumu());
+        ps.setString(4, s.getPesel());
+        ps.setInt(5, s.getRok_studiow());
+        ps.setInt(6, s.getNralbumu());
     }
 
     public void updateGrades(int studentId, String grades, String ocenakoncowa, String przedmiotDb) throws SQLException {
@@ -236,7 +231,11 @@ public final class BazaDanych {
 
     public ArrayList<Integer> getStudentIDList(String przedmiot) throws SQLException {
         reopenConn();
-        String query = String.format("SELECT * FROM %s", przedmiot);
+        ps = conn.prepareStatement("SELECT * FROM przedmioty WHERE nazwa = ?");
+        ps.setString(1, przedmiot);
+        String tabela = ps.executeQuery().getString("nazwatabeli");
+        ps.close();
+        String query = String.format("SELECT * FROM %s", tabela);
         ps = conn.prepareStatement(query);
         ArrayList<Integer> out = new ArrayList<>();
         ResultSet resultSet = ps.executeQuery();
@@ -247,7 +246,11 @@ public final class BazaDanych {
 
     public ArrayList<ImmutableTriple<String, String, String>> getGradeList(String przedmiot) throws SQLException {
         reopenConn();
-        String query = String.format("SELECT * FROM %s", przedmiot);
+        ps = conn.prepareStatement("SELECT * FROM przedmioty WHERE nazwa = ?");
+        ps.setString(1, przedmiot);
+        String tabela = ps.executeQuery().getString("nazwatabeli");
+        ps.close();
+        String query = String.format("SELECT * FROM %s", tabela);
         ps = conn.prepareStatement(query);
         ArrayList<ImmutableTriple<String, String, String>> out = new ArrayList<>();
         ResultSet resultSet = ps.executeQuery();
@@ -290,14 +293,21 @@ public final class BazaDanych {
     public void removeStudent(int id) throws SQLException {
         reopenConn();
         ps = conn.prepareStatement("DELETE FROM studenci WHERE id=?");
-        ps.setInt(1,id);
+        ps.setInt(1, id);
         ps.execute();
     }
 
     public void removeProwadzacy(int id) throws SQLException {
         reopenConn();
         ps = conn.prepareStatement("DELETE FROM prowadzacy WHERE id=?");
-        ps.setInt(1,id);
+        ps.setInt(1, id);
+        ps.execute();
+    }
+
+    public void removePrzedmiot(int id) throws SQLException {
+        reopenConn();
+        ps = conn.prepareStatement("DELETE FROM przedmioty WHERE id=?");
+        ps.setInt(1, id);
         ps.execute();
     }
 
@@ -308,5 +318,6 @@ public final class BazaDanych {
 //        ps.setBytes(2, hashPair.right);
 //        ps.execute();
     }
+
 
 }

@@ -25,6 +25,7 @@ public class StudentLista extends JPanel {
         loadData();
         this.setLayout(new BorderLayout());
         table.setFillsViewportHeight(true);
+        table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         JScrollPane scrollPane = new JScrollPane(table);
         this.add(scrollPane, BorderLayout.CENTER);
     }

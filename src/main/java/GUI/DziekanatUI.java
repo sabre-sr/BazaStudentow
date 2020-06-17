@@ -31,7 +31,7 @@ public class DziekanatUI extends JFrame {
         });
         zarzadzaniePrzedmiotamiButton.addActionListener(e -> {
             try {
-                new PrzedmiotLista();
+                new PrzedmiotManagement();
             } catch (SQLException throwables) {
                 JOptionPane.showMessageDialog(null, "Błąd dostępu do SQL");
                 throwables.printStackTrace();

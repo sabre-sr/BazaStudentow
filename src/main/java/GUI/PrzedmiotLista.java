@@ -8,9 +8,9 @@ import java.awt.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class PrzedmiotLista extends JPanel {
+public class PrzedmiotLista extends JPanel{
     public JTable table;
-    String[] kolumny = {"ID", "Nazwa przedmiotu", "Nazwa tabeli"};
+    String[] kolumny = {"ID", "Imie i nazwisko", "Przedmiot"};
     DefaultTableModel tableModel;
     public PrzedmiotLista() throws SQLException {
         super();
@@ -20,22 +20,18 @@ public class PrzedmiotLista extends JPanel {
                 return false;
             }
         };
-        this.setLayout(new BorderLayout());
+        table = new JTable(tableModel);
         loadData();
+        this.setLayout(new BorderLayout());
         table.setFillsViewportHeight(true);
         JScrollPane scrollPane = new JScrollPane(table);
         this.add(scrollPane, BorderLayout.CENTER);
     }
 
-    private void loadData() throws SQLException {
-        this.table = new JTable(tableModel);
-        table.setAutoCreateRowSorter(true);
-        Object[] data;
+    public void loadData() throws SQLException {
+        tableModel.setRowCount(0);
         ResultSet rs = BazaDanych.bazaDanych.getPrzedmioty();
-        while (rs.next()) {
-            data = new Object[]{rs.getInt("id"), rs.getString("nazwa"), rs.getString("nazwatabeli")};
-            tableModel.addRow(data);
-        }
+        Utils.TableTools.fillTable(rs, tableModel, table, "prowadzacy");
     }
 
     public static void main(String[] args) throws SQLException {
@@ -46,4 +42,5 @@ public class PrzedmiotLista extends JPanel {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 }
+
 

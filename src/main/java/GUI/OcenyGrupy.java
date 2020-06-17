@@ -47,6 +47,7 @@ public class OcenyGrupy extends JPanel {
         this.setLayout(new BorderLayout());
         JTable table = new JTable(tableModel);
         table.setAutoCreateRowSorter(true);
+        table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         Iterator<ImmutableTriple<String, String, String>> immutableTripleIterator = oceny.iterator();
         Iterator<Integer> integerIterator = id.iterator();
         while (immutableTripleIterator.hasNext() && integerIterator.hasNext()) {

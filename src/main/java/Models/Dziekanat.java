@@ -29,8 +29,8 @@ public class Dziekanat extends Osoba {
         studentQuery.updateInt("rokstudiow", studentQuery.getInt("rokstudiow") + 1);
     }
 
-    public boolean addProwadzacy(Prowadzacy p, char[] haslo) throws InvalidKeySpecException, SQLException, NoSuchAlgorithmException {
-        return BazaDanych.bazaDanych.addProwadzacy(p, haslo);
+    public void addProwadzacy(Prowadzacy p, char[] haslo) throws InvalidKeySpecException, SQLException, NoSuchAlgorithmException {
+        BazaDanych.bazaDanych.addProwadzacy(p, haslo);
     }
 
     public void addPrzedmiot(String przedmiot) throws SQLException {
