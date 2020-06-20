@@ -19,8 +19,8 @@ public abstract class TableTools implements Serializable {
             tableModel.addRow(data);
         }
         tableModel.setRowCount(tableModel.getRowCount());
-        tableModel.fireTableDataChanged();
         table.setAutoCreateRowSorter(true);
         table.setSelectionMode(2);
+        tableModel.fireTableDataChanged();
     }
 }

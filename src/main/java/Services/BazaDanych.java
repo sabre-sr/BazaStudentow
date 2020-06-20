@@ -91,7 +91,6 @@ public final class BazaDanych {
             return null;
         String hash = result.getString("passwordhash");
         byte[] salt = result.getBytes("salt");
-        int id = result.getInt("id");
         if (Passwords.validatePassword(haslo, salt, hash)) {
             switch (pozycja) {
                 case "studenci":
@@ -230,13 +229,7 @@ public final class BazaDanych {
     }
 
     public ArrayList<Integer> getStudentIDList(String przedmiot) throws SQLException {
-        reopenConn();
-        ps = conn.prepareStatement("SELECT * FROM przedmioty WHERE nazwa = ?");
-        ps.setString(1, przedmiot);
-        String tabela = ps.executeQuery().getString("nazwatabeli");
-        ps.close();
-        String query = String.format("SELECT * FROM %s", tabela);
-        ps = conn.prepareStatement(query);
+        getPrzedmiot(przedmiot);
         ArrayList<Integer> out = new ArrayList<>();
         ResultSet resultSet = ps.executeQuery();
         while (resultSet.next())
@@ -244,7 +237,7 @@ public final class BazaDanych {
         return out;
     }
 
-    public ArrayList<ImmutableTriple<String, String, String>> getGradeList(String przedmiot) throws SQLException {
+    private void getPrzedmiot(String przedmiot) throws SQLException {
         reopenConn();
         ps = conn.prepareStatement("SELECT * FROM przedmioty WHERE nazwa = ?");
         ps.setString(1, przedmiot);
@@ -252,6 +245,10 @@ public final class BazaDanych {
         ps.close();
         String query = String.format("SELECT * FROM %s", tabela);
         ps = conn.prepareStatement(query);
+    }
+
+    public ArrayList<ImmutableTriple<String, String, String>> getGradeList(String przedmiot) throws SQLException {
+        getPrzedmiot(przedmiot);
         ArrayList<ImmutableTriple<String, String, String>> out = new ArrayList<>();
         ResultSet resultSet = ps.executeQuery();
         ResultSet uczniowie;
@@ -287,7 +284,6 @@ public final class BazaDanych {
         ps.setString(1, przedmiot);
         ps.setString(2, tabelanazwa);
         ps.execute();
-        conn.commit();
     }
 
     public void removeStudent(int id) throws SQLException {
@@ -306,6 +302,14 @@ public final class BazaDanych {
 
     public void removePrzedmiot(int id) throws SQLException {
         reopenConn();
+        ps = conn.prepareStatement("SELECT * FROM przedmioty WHERE id=?");
+        ps.setInt(1, id);
+        ResultSet query = ps.executeQuery();
+        query.next();
+        String nazwatabeli = query.getString("nazwatabeli");
+        query.close();
+        ps = conn.prepareStatement(String.format("DROP TABLE %s", nazwatabeli));
+        ps.execute();
         ps = conn.prepareStatement("DELETE FROM przedmioty WHERE id=?");
         ps.setInt(1, id);
         ps.execute();

@@ -10,7 +10,7 @@ import java.sql.SQLException;
 
 public class PrzedmiotLista extends JPanel{
     public JTable table;
-    String[] kolumny = {"ID", "Imie i nazwisko", "Przedmiot"};
+    String[] kolumny = {"ID", "Przedmiot", "Nazwa tabeli"};
     DefaultTableModel tableModel;
     public PrzedmiotLista() throws SQLException {
         super();
@@ -31,7 +31,7 @@ public class PrzedmiotLista extends JPanel{
     public void loadData() throws SQLException {
         tableModel.setRowCount(0);
         ResultSet rs = BazaDanych.bazaDanych.getPrzedmioty();
-        Utils.TableTools.fillTable(rs, tableModel, table, "prowadzacy");
+        Utils.TableTools.fillTable(rs, tableModel, table, "przedmiot");
     }
 
     public static void main(String[] args) throws SQLException {

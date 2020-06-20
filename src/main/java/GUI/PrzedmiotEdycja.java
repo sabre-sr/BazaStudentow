@@ -17,8 +17,9 @@ public class PrzedmiotEdycja extends JDialog {
         new PrzedmiotEdycja(0);
     }
     public PrzedmiotEdycja(int id) {
+        this.setModal(true);
         this.id = id;
-        this.add(this.nazwaLabel = new JLabel("NazwaPrzedmiotu"));
+        this.add(this.nazwaLabel = new JLabel("Nazwa Przedmiotu"));
         this.add(this.nazwa = new JTextField(8));
         this.add(this.ok = new JButton("OK"));
         this.add(this.anuluj = new JButton("Anuluj"));
@@ -37,6 +38,8 @@ public class PrzedmiotEdycja extends JDialog {
                     throwables.printStackTrace();
                 }
             }
+            this.dispose();
         });
+        this.setVisible(true);
     }
 }

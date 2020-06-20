@@ -7,14 +7,13 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.ListIterator;
 
 /**
  *
  */
 public class OcenyGrupy extends JPanel {
     final String[] kolumny = {"ID", "Nazwisko", "Oceny", "Ocena Końcowa"};
-    private Object[] data;
     DefaultTableModel tableModel;
     private final JTable table;
 
@@ -24,40 +23,33 @@ public class OcenyGrupy extends JPanel {
      */
     public OcenyGrupy(ArrayList<ImmutableTriple<String, String, String>> oceny, ArrayList<Integer> id, String przedmiot) {
         super();
-        this.table = buildTable(oceny, id);
-        ListSelectionModel cellSelectionModel = table.getSelectionModel();
-        cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        cellSelectionModel.addListSelectionListener(e -> {
-            int row = table.getSelectedRow();
-            new EditGrades((int)this.table.getValueAt(row, 0), this.table.getValueAt(row, 1).toString(), this.table.getValueAt(row, 2).toString(), this.table.getValueAt(row, 3).toString(), przedmiot);
-            buildTable(oceny, id);
-        });
-        JScrollPane scrollPane = new JScrollPane(table);
-        this.add(scrollPane, BorderLayout.CENTER);
-    }
-
-    @NotNull
-    private JTable buildTable(ArrayList<ImmutableTriple<String, String, String>> oceny, ArrayList<Integer> id) {
-        tableModel = new DefaultTableModel(kolumny, 0) {
+        tableModel = new DefaultTableModel(kolumny,0){
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
         };
+        table = new JTable(tableModel);
+        loadData(oceny, id);
         this.setLayout(new BorderLayout());
-        JTable table = new JTable(tableModel);
-        table.setAutoCreateRowSorter(true);
+        table.setFillsViewportHeight(true);
         table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-        Iterator<ImmutableTriple<String, String, String>> immutableTripleIterator = oceny.iterator();
-        Iterator<Integer> integerIterator = id.iterator();
-        while (immutableTripleIterator.hasNext() && integerIterator.hasNext()) {
-            ImmutableTriple<String, String, String> listaocen = immutableTripleIterator.next();
-            Integer listaid = integerIterator.next();
-            data = new Object[]{listaid, listaocen.left, listaocen.middle, listaocen.right};
+        JScrollPane scrollPane = new JScrollPane(table);
+        this.add(scrollPane, BorderLayout.CENTER);
+    }
+
+    private void loadData(ArrayList<ImmutableTriple<String, String, String>> oceny, ArrayList<Integer> id) {
+        ListIterator<ImmutableTriple<String, String, String>> iOceny = oceny.listIterator();
+        ListIterator<Integer> i_Id = id.listIterator();
+        while (iOceny.hasNext() && i_Id.hasNext()) {
+            ImmutableTriple<String, String, String> temp = iOceny.next();
+            Object[] data = new Object[]{i_Id.next(), temp.left, temp.middle, temp.right};
             tableModel.addRow(data);
         }
-        table.setCellSelectionEnabled(true);
-        return table;
+        tableModel.setRowCount(tableModel.getRowCount());
+        tableModel.fireTableDataChanged();
+        table.setAutoCreateRowSorter(true);
+        table.setSelectionMode(2);
     }
 
 }

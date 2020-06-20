@@ -42,10 +42,10 @@ public class Dziekanat extends Osoba {
         BazaDanych.bazaDanych.removeStudent(query.getInt("id"));
     }
 
-    public static void main(String[] args) throws InvalidKeySpecException, SQLException, NoSuchAlgorithmException {
-//        System.out.println(BazaDanych.bazaDanych.addDziekanat(new Dziekanat("root"), Arrays.toString(new String[]{haslo})));
-//        System.out.println(BazaDanych.bazaDanych.logIn("root", "root" , "dziekanat"));
-    }
+//    public static void main(String[] args) throws InvalidKeySpecException, SQLException, NoSuchAlgorithmException {
+////        System.out.println(BazaDanych.bazaDanych.addDziekanat(new Dziekanat("root"), Arrays.toString(new String[]{haslo})));
+////        System.out.println(BazaDanych.bazaDanych.logIn("root", "root" , "dziekanat"));
+//    }
 
     @Override
     public void openWindow() throws SQLException {

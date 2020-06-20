@@ -58,5 +58,6 @@ public class EditGrades extends JDialog implements Serializable {
             }
             this.dispose();
         });
+        this.setVisible(true);
     }
 }

@@ -43,4 +43,8 @@ public class PrzedmiotManagement extends JFrame {
         this.setVisible(true);
 
     }
+
+    public static void main(String[] args) throws SQLException {
+        new PrzedmiotManagement();
+    }
 }
