@@ -15,7 +15,7 @@ import java.util.ListIterator;
 public class OcenyGrupy extends JPanel {
     final String[] kolumny = {"ID", "Nazwisko", "Oceny", "Ocena Końcowa"};
     DefaultTableModel tableModel;
-    private final JTable table;
+    public final JTable table;
 
     /**
      * @param oceny - lista ocen, gdzie lewa zmienna to imie i nazwisko; środkowa - lista ocen; prawa - ocena koncowa.
@@ -38,7 +38,8 @@ public class OcenyGrupy extends JPanel {
         this.add(scrollPane, BorderLayout.CENTER);
     }
 
-    private void loadData(ArrayList<ImmutableTriple<String, String, String>> oceny, ArrayList<Integer> id) {
+    public void loadData(ArrayList<ImmutableTriple<String, String, String>> oceny, ArrayList<Integer> id) {
+        tableModel.setRowCount(0);
         ListIterator<ImmutableTriple<String, String, String>> iOceny = oceny.listIterator();
         ListIterator<Integer> i_Id = id.listIterator();
         while (iOceny.hasNext() && i_Id.hasNext()) {

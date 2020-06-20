@@ -32,7 +32,7 @@ public class Prowadzacy extends Osoba{
 
     public static float srednia(String oceny) {
         float srednia = (float) 0.0;
-        String[] tokens = oceny.split(", ");
+        String[] tokens = oceny.split(" ");
         int liczba=0;
         for (String i:tokens) {
             srednia += Float.parseFloat(i);

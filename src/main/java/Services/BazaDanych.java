@@ -196,7 +196,7 @@ public final class BazaDanych {
     public void updateGrades(int studentId, String grades, String ocenakoncowa, String przedmiotDb) throws SQLException {
         String query = "UPDATE " + przedmiotDb;
         reopenConn();
-        ps = conn.prepareStatement(query + " SET oceny ?, ocenakoncowa = ? WHERE id_stud = ?");
+        ps = conn.prepareStatement(query + " SET oceny = ?, ocenakoncowa = ? WHERE id_stud = ?");
         ps.setString(1, grades);
         ps.setString(2, ocenakoncowa);
         ps.setInt(3, studentId);
@@ -245,6 +245,17 @@ public final class BazaDanych {
         ps.close();
         String query = String.format("SELECT * FROM %s", tabela);
         ps = conn.prepareStatement(query);
+    }
+
+    public String getNazwaTabeli(String przedmiot) throws SQLException {
+        reopenConn();
+        ps = conn.prepareStatement("SELECT * FROM przedmioty WHERE nazwa = ?");
+        ps.setString(1, przedmiot);
+        ResultSet query= ps.executeQuery();
+        query.next();
+        String nazwaTabeli = query.getString("nazwatabeli");
+        query.close();
+        return nazwaTabeli;
     }
 
     public ArrayList<ImmutableTriple<String, String, String>> getGradeList(String przedmiot) throws SQLException {
