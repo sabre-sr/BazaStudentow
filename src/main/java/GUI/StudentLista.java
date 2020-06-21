@@ -11,6 +11,7 @@ import java.sql.SQLException;
 
 public class StudentLista extends JPanel {
     public JTable table;
+    ResultSet rs;
     String[] kolumny = {"ID", "Imie i Nazwisko", "PESEL", "Rok studiow", "Nr albumu"};
     DefaultTableModel tableModel;
     public StudentLista() throws SQLException {

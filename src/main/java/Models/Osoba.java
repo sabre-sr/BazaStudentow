@@ -10,7 +10,6 @@ public abstract class Osoba implements WindowManagement {
         this.imienazwisko = imienazwisko;
     }
 
-
     public String getImienazwisko() {
         return imienazwisko;
     }

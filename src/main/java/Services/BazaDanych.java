@@ -50,10 +50,6 @@ public final class BazaDanych {
     }
 
     private void reopenConn() throws SQLException {
-//        if (ps == null||!ps.isClosed()) {
-//            assert ps != null;
-//            ps.close();
-//        }
         conn.close();
         String path = "jdbc:sqlite:baza.db";
         try {
@@ -149,8 +145,8 @@ public final class BazaDanych {
             ps = conn.prepareStatement("SELECT * FROM studenci WHERE nralbumu=?");
             ps.setInt(1, s.getNralbumu());
         } else if (!s.getImieNazwisko().equals("")) {
-            ps = conn.prepareStatement("SELECT * FROM studenci WHERE imienazwisko=?");
-            ps.setString(1, s.getImieNazwisko());
+            ps = conn.prepareStatement("SELECT * FROM studenci WHERE imienazwisko LIKE ?");
+            ps.setString(1, ('%'+s.getImieNazwisko()+'%'));
         }
         result = ps.executeQuery();
         result.next();

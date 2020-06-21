@@ -35,6 +35,7 @@ public class Student extends Osoba {
         return super.getImienazwisko();
     }
 
+
     public static Student createStudent(ResultSet resultSet) throws SQLException, InvalidPESELException {
         Student student = new Student(resultSet.getString("imienazwisko"), resultSet.getString("pesel"), resultSet.getInt("nralbumu"), resultSet.getInt("rokstudiow"));
         student.setId(resultSet.getInt("id"));
@@ -57,6 +58,13 @@ public class Student extends Osoba {
 
     public Student() {
         super("");
+        this.pesel = "";
+        this.nralbumu = 0;
+        this.rok_studiow = 0;
+    }
+
+    public Student(String imienazwisko) {
+        super(imienazwisko);
         this.pesel = "";
         this.nralbumu = 0;
         this.rok_studiow = 0;

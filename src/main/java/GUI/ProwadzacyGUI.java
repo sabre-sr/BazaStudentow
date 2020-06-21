@@ -38,5 +38,8 @@ public class ProwadzacyGUI extends JFrame {
                 throwables.printStackTrace();
             }
         });
+        this.dodajUcznia.addActionListener(e -> {
+
+        });
     }
 }
