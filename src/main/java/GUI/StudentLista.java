@@ -11,7 +11,6 @@ import java.sql.SQLException;
 
 public class StudentLista extends JPanel {
     public JTable table;
-    ResultSet rs;
     String[] kolumny = {"ID", "Imie i Nazwisko", "PESEL", "Rok studiow", "Nr albumu"};
     DefaultTableModel tableModel;
     public StudentLista() throws SQLException {
@@ -32,12 +31,15 @@ public class StudentLista extends JPanel {
     }
 
     public void loadData() throws SQLException {
-        this.loadData(BazaDanych.bazaDanych.getStudents());
+        ResultSet rs = BazaDanych.bazaDanych.getStudents();
+        rs.next();
+        this.loadData(rs);
     }
 
     public void loadData(ResultSet rs) throws SQLException {
         tableModel.setRowCount(0);
         TableTools.fillTable(rs, tableModel, table, "student");
+        rs.close();
     }
 
     public static void main(String[] args) throws SQLException {

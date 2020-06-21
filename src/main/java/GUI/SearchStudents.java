@@ -13,12 +13,19 @@ public class SearchStudents extends JPanel {
         tabelka = new StudentLista();
         tabelka.loadData(resultSet);
         this.setSize(400, 300);
+        this.add(this.tabelka);
         this.setLayout(new BorderLayout());
         tabelka.table.setFillsViewportHeight(true);
         tabelka.table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         JScrollPane scrollPane = new JScrollPane(tabelka.table);
         this.add(scrollPane, BorderLayout.CENTER);
-        this.add(this.tabelka);
+        this.setVisible(true);
+    }
 
+    public static void main(String[] args) throws SQLException {
+        JFrame frame = new JFrame("test");
+        frame.add(new SearchStudents());
+        frame.pack();
+        frame.setVisible(true);
     }
 }

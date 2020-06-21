@@ -60,7 +60,6 @@ public final class BazaDanych {
     }
 
     public ResultSet getStudents() throws SQLException {
-        reopenConn();
         ps = conn.prepareStatement("SELECT * FROM studenci");
         return result = ps.executeQuery();
     }
@@ -200,7 +199,6 @@ public final class BazaDanych {
     }
 
     public ArrayList<ImmutablePair<String, ResultSet>> getGrades(int student_id) throws SQLException {
-        reopenConn();
         ps = conn.prepareStatement("SELECT * FROM przedmioty");
         result = ps.executeQuery();
         ArrayList<ImmutablePair<String, ResultSet>> results = new ArrayList<>();
@@ -225,12 +223,21 @@ public final class BazaDanych {
     }
 
     public ArrayList<Integer> getStudentIDList(String przedmiot) throws SQLException {
+        reopenConn();
         getPrzedmiot(przedmiot);
         ArrayList<Integer> out = new ArrayList<>();
         ResultSet resultSet = ps.executeQuery();
         while (resultSet.next())
             out.add(resultSet.getInt("id_stud"));
         return out;
+    }
+
+    public void addStudentToClass(Student temp, String przedmiot) throws SQLException {
+        String tabela = this.getNazwaTabeli(przedmiot);
+        ps = conn.prepareStatement(String.format("INSERT INTO %s (id_stud) VALUES (?)", tabela));
+        ps.setInt(1, temp.getId());
+        ps.execute();
+        ps.close();
     }
 
     private void getPrzedmiot(String przedmiot) throws SQLException {
@@ -265,7 +272,9 @@ public final class BazaDanych {
             uczniowie = ps.executeQuery();
             uczniowie.next();
             out.add(new ImmutableTriple<>(uczniowie.getString("imienazwisko"), resultSet.getString("oceny"), resultSet.getString("ocenakoncowa")));
+            uczniowie.close();
         }
+        resultSet.close();
         return out;
     }
 
@@ -329,6 +338,7 @@ public final class BazaDanych {
 //        ps.setBytes(2, hashPair.right);
 //        ps.execute();
     }
+
 
 
 }

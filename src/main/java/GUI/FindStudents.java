@@ -4,6 +4,7 @@ import Models.Student;
 import Services.BazaDanych;
 
 import javax.swing.*;
+import java.awt.*;
 import java.sql.SQLException;
 
 public class FindStudents extends JDialog{
@@ -22,12 +23,12 @@ public class FindStudents extends JDialog{
         this.add(this.szukany = new JTextField(8));
         this.add(this.tryb_label = new JLabel("Szukaj po: "));
         tryb = new ButtonGroup();
-        tryb.add(nrindeksu);
-        tryb.add(imienazwisko);
         this.add(this.nrindeksu = new JRadioButton("Nr indeksu"));
         this.add(this.imienazwisko = new JRadioButton("Imie i nazwisko"));
         this.nrindeksu.setActionCommand("nrindeksu");
         this.imienazwisko.setActionCommand("imienazwisko");
+        tryb.add(nrindeksu);
+        tryb.add(imienazwisko);
         this.add(this.ok = new JButton("OK"));
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         this.ok.addActionListener(e -> {
@@ -51,6 +52,8 @@ public class FindStudents extends JDialog{
                 throwables.printStackTrace();
             }
         });
+        this.setLayout(new FlowLayout());
+        this.setSize(122,200);
         this.setVisible(true);
     }
 }

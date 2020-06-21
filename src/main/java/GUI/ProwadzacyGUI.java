@@ -7,7 +7,7 @@ import java.awt.*;
 import java.sql.SQLException;
 
 public class ProwadzacyGUI extends JFrame {
-    private Models.Prowadzacy uzytkownik;
+    private final Models.Prowadzacy uzytkownik;
     JLabel imienazwisko, przedmiot;
     JButton dodajUcznia, edytujOcene;
     OcenyGrupy tabelka;
@@ -39,7 +39,13 @@ public class ProwadzacyGUI extends JFrame {
             }
         });
         this.dodajUcznia.addActionListener(e -> {
-
+            try {
+                new AddStudentsToClass(uzytkownik.getPrzedmiot());
+                this.tabelka.loadData(BazaDanych.bazaDanych.getGradeList(this.uzytkownik.getPrzedmiot()), BazaDanych.bazaDanych.getStudentIDList(this.uzytkownik.getPrzedmiot()));
+            } catch (SQLException throwables) {
+                JOptionPane.showMessageDialog(null, ("Problem z bazą danych: ")+throwables.getMessage());
+                throwables.printStackTrace();
+            }
         });
     }
 }
