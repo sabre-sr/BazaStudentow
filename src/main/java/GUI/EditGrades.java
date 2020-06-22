@@ -25,13 +25,13 @@ public class EditGrades extends JDialog implements Serializable {
 
     public EditGrades(int studentId, String imienazwisko, String oceny, String ocenakoncowa, String przedmiot) {
         this.setModal(true);
-        this.setSize(350,500);
+        this.setSize(400,500);
         this.studentId = studentId;
         this.przedmiot = przedmiot;
         this.add(this.nazwisko = new JLabel(imienazwisko));
         this.oceny = new JPanel();
         this.oceny.add(this.oceny_label = new JLabel("Oceny: "));
-        this.ocenyField = new ArrayList<JTextField>();
+        this.ocenyField = new ArrayList<>();
         if (oceny == null){
             oceny = "0.0";
         }
@@ -51,18 +51,18 @@ public class EditGrades extends JDialog implements Serializable {
         this.add(this.oceny);
         this.setLayout(new FlowLayout());
         this.oceny.setLayout(new WrapLayout());
-        this.oceny.setSize(600, 1000);
+        this.oceny.setSize(300, 500);
         ok.addActionListener(e -> {
             String temp = getGradeString();
-            MutablePair<String, String> pair = new MutablePair<String, String>();
-            pair.left = temp.toString();
+            MutablePair<String, String> pair = new MutablePair<>();
+            pair.left = temp;
             try {
                 Float.parseFloat(srednia_input.getText());
                 pair.right = srednia_input.getText();
             } catch (NumberFormatException err) {
                 pair.right = ocenakoncowa;
             }
-            if (pair.right.isEmpty())
+            if (pair.right == null)
                 pair.right = " ";
             try {
                 BazaDanych.bazaDanych.updateGrades(studentId, pair.left, pair.right, this.przedmiot);
@@ -75,6 +75,7 @@ public class EditGrades extends JDialog implements Serializable {
         this.dodaj.addActionListener(e -> {
             ocenyField.add(new JTextField(3));
             this.oceny.add(ocenyField.get(ocenyField.size() - 1));
+            this.oceny.setSize(300, 500);
             this.oceny.revalidate();
         });
         this.odswiez.addActionListener(e -> {
@@ -95,9 +96,5 @@ public class EditGrades extends JDialog implements Serializable {
             }
         }
         return temp.toString();
-    }
-
-    public static void main(String[] args) {
-        new EditGrades(0, "", "3.0 3.5", "", "");
     }
 }

@@ -8,6 +8,7 @@ import java.sql.SQLException;
 public class SearchStudents extends JPanel {
     public ResultSet resultSet;
     public StudentLista tabelka;
+
     public SearchStudents() throws SQLException {
         new FindStudents(this);
         tabelka = new StudentLista();
@@ -20,12 +21,5 @@ public class SearchStudents extends JPanel {
         JScrollPane scrollPane = new JScrollPane(tabelka.table);
         this.add(scrollPane, BorderLayout.CENTER);
         this.setVisible(true);
-    }
-
-    public static void main(String[] args) throws SQLException {
-        JFrame frame = new JFrame("test");
-        frame.add(new SearchStudents());
-        frame.pack();
-        frame.setVisible(true);
     }
 }

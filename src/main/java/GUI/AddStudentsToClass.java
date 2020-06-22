@@ -33,8 +33,4 @@ public class AddStudentsToClass extends JDialog {
         });
         this.setVisible(true);
     }
-
-    public static void main(String[] args) throws SQLException {
-        new AddStudentsToClass("Programowanie obiektowe");
-    }
 }

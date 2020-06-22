@@ -3,14 +3,17 @@ package GUI;
 import Exceptions.InvalidPESELException;
 import Models.Student;
 import Services.BazaDanych;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class StudentManagement extends JFrame {
     private StudentLista tabelka;
-    private final JButton znajdz, dodaj, edytuj, karta, usun;
+    private final JButton znajdz, dodaj, edytuj, karta, usun, graduate, srednia;
 
     public StudentManagement() throws SQLException {
         super("Zarządzanie studentami");
@@ -18,10 +21,12 @@ public class StudentManagement extends JFrame {
         this.add(this.dodaj = new JButton("Dodaj"));
         this.add(this.znajdz = new JButton("Znajdź"));
         this.add(this.edytuj = new JButton("Edytuj"));
+        this.add(this.graduate = new JButton("Zaliczenie roku"));
         this.add(usun = new JButton("Usuń"));
         this.add(this.karta = new JButton("Karta studenta"));
+        this.add(this.srednia = new JButton("Średnia"));
         this.setLayout(new FlowLayout());
-        this.setSize(470, 520);
+        this.setSize(470, 540);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.dodaj.addActionListener(e -> {
             try {
@@ -76,11 +81,42 @@ public class StudentManagement extends JFrame {
                 JOptionPane.showMessageDialog(null, "Nr Pesel jest nieprawidlowy. Nie mozna otworzyc karty.");
             }
         });
+        this.graduate.addActionListener(e -> {
+            int row = tabelka.table.getSelectedRow();
+            int id = Integer.parseInt(String.valueOf(tabelka.table.getValueAt(row, 0)));
+            int grade = Integer.parseInt(String.valueOf(tabelka.table.getValueAt(row, 3)));
+            try {
+                BazaDanych.bazaDanych.updateYear(id, grade);
+                tabelka.loadData();
+                tabelka.tableModel.fireTableDataChanged();
+            } catch (SQLException throwables) {
+                JOptionPane.showMessageDialog(null, ("Problem z bazą danych: ") + throwables.getMessage());
+                throwables.printStackTrace();
+            }
+        });
+        this.srednia.addActionListener(e -> {
+            float suma = (float) 0.0;
+            int liczbaocen = 0;
+            int row = tabelka.table.getSelectedRow();
+            int id = Integer.parseInt(String.valueOf(tabelka.table.getValueAt(row, 0)));
+            try {
+                ArrayList<ImmutablePair<String, ResultSet>> oceny = BazaDanych.bazaDanych.getGrades(id);
+                for (ImmutablePair<String, ResultSet> i : oceny) {
+                    i.right.next();
+                    float temp = Float.parseFloat(i.right.getString("ocenakoncowa"));
+                    suma += temp;
+                    liczbaocen++;
+                    i.right.close();
+                }
+                if (liczbaocen == 0) {
+                    suma = (float) 0.0;
+                } else suma /= liczbaocen;
+                JOptionPane.showMessageDialog(null, "Srednia: " + suma);
+            } catch (SQLException throwables) {
+                JOptionPane.showMessageDialog(null, ("Problem z bazą danych: ") + throwables.getMessage());
+                throwables.printStackTrace();
+            }
+        });
         this.setVisible(true);
-    }
-
-
-    public static void main(String[] args) throws SQLException {
-        new StudentManagement();
     }
 }

@@ -43,8 +43,4 @@ public class DziekanatUI extends JFrame {
         this.setSize(500, 150);
         this.setVisible(true);
     }
-
-    public static void main(String[] args) {
-        new DziekanatUI();
-    }
 }

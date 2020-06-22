@@ -23,12 +23,6 @@ public class StudentGUI extends JFrame {
         this.setSize(500, 500);
         this.setLayout(new FlowLayout());
         this.setVisible(true);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    }
-
-    public static void main(String[] args) throws InvalidPESELException, SQLException {
-        Student s = new Student("Jan Kowalski", "96052400677", 123, 1);
-        s.setId(1);
-        new StudentGUI(s);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 }

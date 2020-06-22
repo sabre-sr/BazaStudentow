@@ -33,14 +33,6 @@ public class PrzedmiotLista extends JPanel{
         ResultSet rs = BazaDanych.bazaDanych.getPrzedmioty();
         Utils.TableTools.fillTable(rs, tableModel, table, "przedmiot");
     }
-
-    public static void main(String[] args) throws SQLException {
-        JFrame frame = new JFrame();
-        frame.add(new PrzedmiotLista());
-        frame.pack();
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    }
 }
 
 

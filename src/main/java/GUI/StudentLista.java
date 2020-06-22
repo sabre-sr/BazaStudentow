@@ -40,12 +40,4 @@ public class StudentLista extends JPanel {
         TableTools.fillTable(rs, tableModel, table, "student");
         rs.close();
     }
-
-    public static void main(String[] args) throws SQLException {
-        JFrame frame = new JFrame();
-        frame.add(new StudentLista());
-        frame.pack();
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    }
 }

@@ -33,12 +33,4 @@ public class ProwadzacyLista extends JPanel{
         ResultSet rs = BazaDanych.bazaDanych.getProwadzacy();
         Utils.TableTools.fillTable(rs, tableModel, table, "prowadzacy");
     }
-
-    public static void main(String[] args) throws SQLException {
-        JFrame frame = new JFrame();
-        frame.add(new ProwadzacyLista());
-        frame.pack();
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    }
 }

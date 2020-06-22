@@ -84,8 +84,4 @@ public class Student extends Osoba {
         }
         return out.toString();
     }
-
-    public static void main(String[] args) {
-        BazaDanych.bazaDanych.main(null);
-    }
 }

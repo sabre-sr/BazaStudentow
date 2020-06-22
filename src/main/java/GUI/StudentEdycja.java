@@ -60,9 +60,7 @@ public class StudentEdycja extends JDialog {
         this.setLayout(new FlowLayout());
         this.pack();
         this.setSize(200, 250);
-        this.anuluj.addActionListener(e -> {
-            this.dispose();
-        });
+        this.anuluj.addActionListener(e -> this.dispose());
         this.ok.addActionListener(e -> {
             try {
                 Student temp = new Student(imienazwisko.getText(), pesel.getText(), Integer.parseInt(nralbumu.getText()),Integer.parseInt(rokstudiow.getText()));
@@ -89,9 +87,5 @@ public class StudentEdycja extends JDialog {
             }
         });
         this.setVisible(true);
-    }
-
-    public static void main(String[] args) {
-            new StudentEdycja();
     }
 }

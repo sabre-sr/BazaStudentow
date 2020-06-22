@@ -165,6 +165,14 @@ public final class BazaDanych {
         bindStudentFields(s);
     }
 
+    public void updateYear(int id, int grade) throws SQLException {
+        reopenConn();
+        ps = conn.prepareStatement("UPDATE studenci SET rokstudiow = ? WHERE id= ?");
+        ps.setInt(1, grade+1);
+        ps.setInt(2, id);
+        ps.execute();
+    }
+
     public void editProwadzacy(Prowadzacy p, char[] haslo) throws SQLException, InvalidKeySpecException, NoSuchAlgorithmException {
         reopenConn();
         System.out.println(haslo);
