@@ -11,9 +11,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class Student extends Osoba {
-    private String pesel;
+    private final String pesel;
     private int nralbumu;
-    private int rok_studiow;
+    private final int rok_studiow;
 
     public String getPesel() {
         return pesel;

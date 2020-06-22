@@ -1,7 +1,5 @@
 package GUI;
 
-import Exceptions.InvalidPESELException;
-import Models.Student;
 import Services.BazaDanych;
 
 import javax.swing.*;
@@ -9,8 +7,8 @@ import java.awt.*;
 import java.sql.SQLException;
 
 public class PrzedmiotManagement extends JFrame {
-    private PrzedmiotLista tabelka;
     private final JButton dodaj, usun;
+    private final PrzedmiotLista tabelka;
 
     public PrzedmiotManagement() throws SQLException {
         this.add(this.tabelka = new PrzedmiotLista());

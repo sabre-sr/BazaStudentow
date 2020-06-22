@@ -8,7 +8,6 @@ import java.sql.SQLException;
 public class SearchStudents extends JPanel {
     public ResultSet resultSet;
     public StudentLista tabelka;
-
     public SearchStudents() throws SQLException {
         new FindStudents(this);
         tabelka = new StudentLista();

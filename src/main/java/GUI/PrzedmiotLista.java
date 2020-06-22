@@ -8,13 +8,14 @@ import java.awt.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class PrzedmiotLista extends JPanel{
+public class PrzedmiotLista extends JPanel {
     public JTable table;
     String[] kolumny = {"ID", "Przedmiot", "Nazwa tabeli"};
     DefaultTableModel tableModel;
+
     public PrzedmiotLista() throws SQLException {
         super();
-        tableModel = new DefaultTableModel(kolumny,0){
+        tableModel = new DefaultTableModel(kolumny, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;

@@ -6,9 +6,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.sql.SQLException;
 
+/**
+ * Okno zarządzania prowadzącymi.
+ */
 public class ProwadzacyManagement extends JFrame {
-    private ProwadzacyLista tabelka;
-    private final JButton dodaj, usun;
+    /**
+     * Przycisk dodawania prowadzących. <p>Wywołuje menu, gdzie można wprowadzić dane, i dodaje je do bazy danych.</p>
+     */
+    private final JButton dodaj;
+    private final JButton usun;
+    private final ProwadzacyLista tabelka;
 
     public ProwadzacyManagement() throws SQLException {
         super("Zarządzanie prowadzącymi");

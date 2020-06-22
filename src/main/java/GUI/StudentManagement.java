@@ -12,14 +12,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class StudentManagement extends JFrame {
-    private StudentLista tabelka;
-    private final JButton znajdz, dodaj, edytuj, karta, usun, graduate, srednia;
+    private final JButton dodaj, edytuj, karta, usun, graduate, srednia;
+    private final StudentLista tabelka;
 
     public StudentManagement() throws SQLException {
         super("Zarządzanie studentami");
         this.add(this.tabelka = new StudentLista());
         this.add(this.dodaj = new JButton("Dodaj"));
-        this.add(this.znajdz = new JButton("Znajdź"));
         this.add(this.edytuj = new JButton("Edytuj"));
         this.add(this.graduate = new JButton("Zaliczenie roku"));
         this.add(usun = new JButton("Usuń"));

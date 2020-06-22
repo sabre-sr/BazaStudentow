@@ -10,7 +10,7 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class Passwords {
-    private static int petle = 1000;
+    private static final int petle = 1000;
     public static @NotNull
     ImmutablePair<String, byte[]> generateHashPair(char[] haslo) throws InvalidKeySpecException, NoSuchAlgorithmException {
         byte[] salt = getSalt();

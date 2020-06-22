@@ -11,13 +11,23 @@ import java.security.spec.InvalidKeySpecException;
 import java.sql.SQLException;
 import java.util.Arrays;
 
+/**
+ * Okno logowania do programu.
+ * <p>
+ * Po wpisaniu danych logowania, skrypt przypisuje odpowiedniego użytkownika, a następnie wywołuje jego menu główne. </p>
+ */
 public class Logowanie extends JFrame {
     JTextField login;
     JPasswordField haslo;
     JLabel login_label, haslo_label;
     JRadioButton student, prowadzacy, dziekanat;
     ButtonGroup trybDostepu;
-    JButton ok, zamknij;
+    /**
+     * Logowanie.
+     * <p>Po naciśnieciu przycisku, program sprawdza poprawność danych logowania, a następnie otwiera okno użytkownika.</p>
+     */
+    JButton ok;
+    JButton zamknij;
 
     public Logowanie() {
         this.add(login_label = new JLabel("Login: "));
@@ -61,8 +71,7 @@ public class Logowanie extends JFrame {
             } catch (InvalidKeySpecException | NoSuchAlgorithmException invalidKeySpecException) {
                 JOptionPane.showMessageDialog(null, "Błąd z dostępem do funkcji szyfrującej.");
                 invalidKeySpecException.printStackTrace();
-            }
-            catch (InvalidPESELException invalidPESELException) {
+            } catch (InvalidPESELException invalidPESELException) {
                 JOptionPane.showMessageDialog(null, "Na twoim koncie wprowadzony jest nieprawidlowy numer Pesel. Skontaktuj się z administracją.");
             }
         });

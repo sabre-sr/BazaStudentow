@@ -4,6 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.sql.SQLException;
 
+/**
+ * Klasa wyświetlająca okno menu zarządzania w dziekanacie. Użytkownik może wybrać jedną z kategorii, którą chce zarządzać.
+ */
 public class DziekanatUI extends JFrame {
 
     public DziekanatUI() {

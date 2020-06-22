@@ -12,6 +12,9 @@ import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/**
+ * Klasa pozwalająca na edycje ocen ucznia. Oceny dzielone są na JTextField, a potem spajane w pełny String. Pozwala na dynamiczne dodawanie pól na oceny.
+ */
 public class EditGrades extends JDialog implements Serializable {
 
     private final JButton ok, dodaj, odswiez;
@@ -20,19 +23,26 @@ public class EditGrades extends JDialog implements Serializable {
     private final JTextField srednia_input;
     private final JLabel srednia;
     private final ArrayList<JTextField> ocenyField;
-    JPanel oceny;
     private final String przedmiot;
+    JPanel oceny;
 
+    /**
+     * @param studentId nr ID edytowanego studenta
+     * @param imienazwisko Imie i nazwisko studenta
+     * @param oceny String z ocenami studenta
+     * @param ocenakoncowa String z oceną końcową studenta
+     * @param przedmiot Nazwa przedmiotu, z którego oceny są edytowane
+     */
     public EditGrades(int studentId, String imienazwisko, String oceny, String ocenakoncowa, String przedmiot) {
         this.setModal(true);
-        this.setSize(400,500);
+        this.setSize(400, 500);
         this.studentId = studentId;
         this.przedmiot = przedmiot;
         this.add(this.nazwisko = new JLabel(imienazwisko));
         this.oceny = new JPanel();
         this.oceny.add(this.oceny_label = new JLabel("Oceny: "));
         this.ocenyField = new ArrayList<>();
-        if (oceny == null){
+        if (oceny == null) {
             oceny = "0.0";
         }
         String[] tokens = oceny.split(" ");
@@ -68,7 +78,7 @@ public class EditGrades extends JDialog implements Serializable {
                 BazaDanych.bazaDanych.updateGrades(studentId, pair.left, pair.right, this.przedmiot);
                 this.dispose();
             } catch (SQLException throwables) {
-                JOptionPane.showMessageDialog(null,"Wystąpił problem z aktualizacją danych.");
+                JOptionPane.showMessageDialog(null, "Wystąpił problem z aktualizacją danych.");
                 throwables.printStackTrace();
             }
         });
@@ -85,6 +95,10 @@ public class EditGrades extends JDialog implements Serializable {
         this.setVisible(true);
     }
 
+    /**
+     * Funkcja parsująca zawartość pól z ocenami, a następnie spajająca je w jeden String do przechowywania w bazie danych.
+     * @return String ocen oddzielonych spacjami
+     */
     @NotNull
     private String getGradeString() {
         StringBuilder temp = new StringBuilder();

@@ -1,7 +1,5 @@
 package GUI;
 
-import Exceptions.InvalidPESELException;
-import Models.Student;
 import Services.BazaDanych;
 
 import javax.swing.*;
@@ -9,10 +7,8 @@ import java.awt.*;
 import java.sql.SQLException;
 
 public class StudentGUI extends JFrame {
-    private Models.Student uzytkownik;
     JLabel imienazwisko, pesel;
-    JButton haslo_zmiana;
-    JTable oceny;
+    private final Models.Student uzytkownik;
 
     public StudentGUI(Models.Student student) throws SQLException {
         this.uzytkownik = student;

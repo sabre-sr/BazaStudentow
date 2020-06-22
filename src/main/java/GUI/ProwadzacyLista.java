@@ -8,13 +8,17 @@ import java.awt.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ProwadzacyLista extends JPanel{
+/**
+ * Panel wyświetlający listę prowadzących.
+ */
+public class ProwadzacyLista extends JPanel {
     public JTable table;
     String[] kolumny = {"ID", "Imie i nazwisko", "Przedmiot"};
     DefaultTableModel tableModel;
+
     public ProwadzacyLista() throws SQLException {
         super();
-        tableModel = new DefaultTableModel(kolumny,0){
+        tableModel = new DefaultTableModel(kolumny, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;

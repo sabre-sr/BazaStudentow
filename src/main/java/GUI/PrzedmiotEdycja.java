@@ -1,21 +1,21 @@
 package GUI;
 
-import Models.Prowadzacy;
 import Services.BazaDanych;
 
 import javax.swing.*;
 import java.awt.*;
 import java.sql.SQLException;
-import java.util.Arrays;
 
 public class PrzedmiotEdycja extends JDialog {
     JLabel nazwaLabel;
     JTextField nazwa;
     JButton ok, anuluj;
     private int id;
-    public PrzedmiotEdycja(){
+
+    public PrzedmiotEdycja() {
         new PrzedmiotEdycja(0);
     }
+
     public PrzedmiotEdycja(int id) {
         this.setModal(true);
         this.id = id;
@@ -27,9 +27,7 @@ public class PrzedmiotEdycja extends JDialog {
         this.setLayout(new FlowLayout());
         this.pack();
         this.setSize(200, 150);
-        this.anuluj.addActionListener(e -> {
-            this.dispose();
-        });
+        this.anuluj.addActionListener(e -> this.dispose());
         this.ok.addActionListener(e -> {
             if (this.id == 0) {
                 try {

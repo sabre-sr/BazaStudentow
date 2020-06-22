@@ -1,6 +1,5 @@
 package Models;
 
-import Exceptions.InvalidPESELException;
 import GUI.DziekanatUI;
 import Services.BazaDanych;
 
@@ -14,7 +13,7 @@ public class Dziekanat extends Osoba {
         super(imienazwisko);
     }
 
-    public static Dziekanat createDziekanat(ResultSet resultSet) throws SQLException, InvalidPESELException {
+    public static Dziekanat createDziekanat(ResultSet resultSet) throws SQLException {
         Dziekanat dziekanat = new Dziekanat(resultSet.getString("imienazwisko"));
         dziekanat.setId(resultSet.getInt("id"));
         return dziekanat;
@@ -24,10 +23,6 @@ public class Dziekanat extends Osoba {
         BazaDanych.bazaDanych.addStudent(s, haslo);
     }
 
-    public void graduateStudent(Student s) throws SQLException {
-        ResultSet studentQuery = BazaDanych.bazaDanych.getStudent(s);
-        studentQuery.updateInt("rokstudiow", studentQuery.getInt("rokstudiow") + 1);
-    }
 
     public void addProwadzacy(Prowadzacy p, char[] haslo) throws InvalidKeySpecException, SQLException, NoSuchAlgorithmException {
         BazaDanych.bazaDanych.addProwadzacy(p, haslo);
@@ -42,13 +37,8 @@ public class Dziekanat extends Osoba {
         BazaDanych.bazaDanych.removeStudent(query.getInt("id"));
     }
 
-//    public static void main(String[] args) throws InvalidKeySpecException, SQLException, NoSuchAlgorithmException {
-////        System.out.println(BazaDanych.bazaDanych.addDziekanat(new Dziekanat("root"), Arrays.toString(new String[]{haslo})));
-////        System.out.println(BazaDanych.bazaDanych.logIn("root", "root" , "dziekanat"));
-//    }
-
     @Override
-    public void openWindow() throws SQLException {
+    public void openWindow() {
         new DziekanatUI();
     }
 }

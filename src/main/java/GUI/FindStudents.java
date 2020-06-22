@@ -7,7 +7,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.sql.SQLException;
 
-public class FindStudents extends JDialog{
+/**
+ * Okno wyszukiwania studentów. Wyszukiwanie jest możliwe poprzez nr indeksu, lub po imieniu i/lub nazwisku.
+ */
+public class FindStudents extends JDialog {
     SearchStudents parent;
     JLabel fraza, tryb_label;
     JTextField szukany;
@@ -16,6 +19,9 @@ public class FindStudents extends JDialog{
     JButton ok;
     private Student student;
 
+    /**
+     * @param parent Klasa wywołująca wyszukiwanie. Jej ResultSet zostanie zmodyfikowany o wyniki wyszukiwania.
+     */
     public FindStudents(SearchStudents parent) {
         this.parent = parent;
         this.setModal(true);
@@ -48,12 +54,12 @@ public class FindStudents extends JDialog{
                 parent.resultSet = BazaDanych.bazaDanych.getStudent(student);
                 this.dispose();
             } catch (SQLException throwables) {
-                JOptionPane.showMessageDialog(null, ("Błąd: ")+throwables.getMessage());
+                JOptionPane.showMessageDialog(null, ("Błąd: ") + throwables.getMessage());
                 throwables.printStackTrace();
             }
         });
         this.setLayout(new FlowLayout());
-        this.setSize(122,200);
+        this.setSize(122, 200);
         this.setVisible(true);
     }
 }

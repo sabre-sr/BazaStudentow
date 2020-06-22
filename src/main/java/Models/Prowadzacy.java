@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Prowadzacy extends Osoba{
-    private String przedmiot;
+    private final String przedmiot;
     public Prowadzacy(String imienazwisko, String przedmiot) {
         super(imienazwisko);
         this.przedmiot = przedmiot;

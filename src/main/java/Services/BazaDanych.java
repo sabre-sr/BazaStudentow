@@ -145,7 +145,7 @@ public final class BazaDanych {
             ps.setInt(1, s.getNralbumu());
         } else if (!s.getImieNazwisko().equals("")) {
             ps = conn.prepareStatement("SELECT * FROM studenci WHERE imienazwisko LIKE ?");
-            ps.setString(1, ('%'+s.getImieNazwisko()+'%'));
+            ps.setString(1, ('%' + s.getImieNazwisko() + '%'));
         }
         result = ps.executeQuery();
         return result;
@@ -168,7 +168,7 @@ public final class BazaDanych {
     public void updateYear(int id, int grade) throws SQLException {
         reopenConn();
         ps = conn.prepareStatement("UPDATE studenci SET rokstudiow = ? WHERE id= ?");
-        ps.setInt(1, grade+1);
+        ps.setInt(1, grade + 1);
         ps.setInt(2, id);
         ps.execute();
     }
@@ -269,7 +269,7 @@ public final class BazaDanych {
         reopenConn();
         ps = conn.prepareStatement("SELECT * FROM przedmioty WHERE nazwa = ?");
         ps.setString(1, przedmiot);
-        ResultSet query= ps.executeQuery();
+        ResultSet query = ps.executeQuery();
         query.next();
         String nazwaTabeli = query.getString("nazwatabeli");
         query.close();
@@ -353,7 +353,6 @@ public final class BazaDanych {
 //        ps.setBytes(2, hashPair.right);
 //        ps.execute();
     }
-
 
 
 }

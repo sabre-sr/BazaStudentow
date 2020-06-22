@@ -9,13 +9,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/**
+ * Panel okna zawierający oceny ucznia.
+ */
 public class OcenyUcznia extends JPanel {
     String[] kolumny = {"Przedmiot", "Oceny", "Ocena Końcowa"};
     DefaultTableModel tableModel;
 
+    /**
+     * @param oceny lista przedmiotów ucznia i ocen z nich
+     * @throws SQLException generyczny błąd SQL
+     */
     public OcenyUcznia(ArrayList<ImmutablePair<String, ResultSet>> oceny) throws SQLException {
         super();
-        tableModel = new DefaultTableModel(kolumny,0){
+        tableModel = new DefaultTableModel(kolumny, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;

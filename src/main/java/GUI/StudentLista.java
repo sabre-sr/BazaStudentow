@@ -13,9 +13,10 @@ public class StudentLista extends JPanel {
     public JTable table;
     String[] kolumny = {"ID", "Imie i Nazwisko", "PESEL", "Rok studiow", "Nr albumu"};
     DefaultTableModel tableModel;
+
     public StudentLista() throws SQLException {
         super();
-        tableModel = new DefaultTableModel(kolumny,0){
+        tableModel = new DefaultTableModel(kolumny, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;

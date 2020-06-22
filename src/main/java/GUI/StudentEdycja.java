@@ -4,7 +4,6 @@ import Exceptions.InvalidPESELException;
 import Models.Student;
 import Services.BazaDanych;
 
-
 import javax.swing.*;
 import java.awt.*;
 import java.security.NoSuchAlgorithmException;
@@ -13,11 +12,11 @@ import java.sql.SQLException;
 import java.util.Arrays;
 
 public class StudentEdycja extends JDialog {
+    private final int id;
     JLabel imienazwisko_label, pesel_label, rokstudiow_label, nralbumu_label, haslo_label;
     JTextField imienazwisko, pesel, rokstudiow, nralbumu;
     JPasswordField haslo;
     JButton ok, anuluj;
-    private final int id;
 
     public StudentEdycja() {
         this.setModal(true);
@@ -40,11 +39,11 @@ public class StudentEdycja extends JDialog {
     public StudentEdycja(Student student) {
         this.setModal(true);
         this.add(this.imienazwisko_label = new JLabel("Imie i nazwisko "));
-        this.add(this.imienazwisko = new JTextField(student.getImieNazwisko(),7));
+        this.add(this.imienazwisko = new JTextField(student.getImieNazwisko(), 7));
         this.add(this.pesel_label = new JLabel("PESEL: "));
-        this.add(this.pesel = new JTextField(student.getPesel(),10));
+        this.add(this.pesel = new JTextField(student.getPesel(), 10));
         this.add(this.rokstudiow_label = new JLabel("Rok studiow: "));
-        this.add(this.rokstudiow = new JTextField(Integer.toString(student.getRok_studiow()),3));
+        this.add(this.rokstudiow = new JTextField(Integer.toString(student.getRok_studiow()), 3));
         this.add(this.nralbumu_label = new JLabel("Nr albumu: "));
         this.add(this.nralbumu = new JTextField(Integer.toString(student.getNralbumu()), 6));
         this.add(this.haslo_label = new JLabel("Haslo: "));
@@ -63,16 +62,14 @@ public class StudentEdycja extends JDialog {
         this.anuluj.addActionListener(e -> this.dispose());
         this.ok.addActionListener(e -> {
             try {
-                Student temp = new Student(imienazwisko.getText(), pesel.getText(), Integer.parseInt(nralbumu.getText()),Integer.parseInt(rokstudiow.getText()));
+                Student temp = new Student(imienazwisko.getText(), pesel.getText(), Integer.parseInt(nralbumu.getText()), Integer.parseInt(rokstudiow.getText()));
                 if (this.id == 0) {
                     BazaDanych.bazaDanych.addStudent(temp, Arrays.toString(haslo.getPassword()).toCharArray());
-                }
-                else {
+                } else {
                     if (haslo.getPassword().length == 0) {
                         BazaDanych.bazaDanych.editStudent(temp, new char[]{'\0'});
                         this.dispose();
-                    }
-                    else BazaDanych.bazaDanych.editStudent(temp, Arrays.toString(haslo.getPassword()).toCharArray());
+                    } else BazaDanych.bazaDanych.editStudent(temp, Arrays.toString(haslo.getPassword()).toCharArray());
                 }
                 this.dispose();
             } catch (NumberFormatException err) {

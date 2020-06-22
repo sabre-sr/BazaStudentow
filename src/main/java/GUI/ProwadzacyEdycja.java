@@ -1,8 +1,6 @@
 package GUI;
 
-import Exceptions.InvalidPESELException;
 import Models.Prowadzacy;
-import Models.Student;
 import Services.BazaDanych;
 
 import javax.swing.*;
@@ -12,7 +10,10 @@ import java.security.spec.InvalidKeySpecException;
 import java.sql.SQLException;
 import java.util.Arrays;
 
-public class ProwadzacyEdycja extends JDialog{
+/**
+ * Okno edycji prowadzącego.
+ */
+public class ProwadzacyEdycja extends JDialog {
     JLabel imienazwisko_label, przedmiot_label, haslo_label;
     JTextField imienazwisko, przedmiot;
     JPasswordField haslo;
@@ -23,6 +24,10 @@ public class ProwadzacyEdycja extends JDialog{
         new ProwadzacyEdycja(0);
     }
 
+    /**
+     * Konstruktor okna
+     * @param id numer ID prowadzącego w bazie danych
+     */
     public ProwadzacyEdycja(int id) {
         this.setModal(true);
         this.id = id;
@@ -38,21 +43,18 @@ public class ProwadzacyEdycja extends JDialog{
         this.setLayout(new FlowLayout());
         this.pack();
         this.setSize(200, 150);
-        this.anuluj.addActionListener(e -> {
-            this.dispose();
-        });
+        this.anuluj.addActionListener(e -> this.dispose());
         this.ok.addActionListener(e -> {
             try {
                 Prowadzacy temp = new Prowadzacy(this.imienazwisko.getText(), this.przedmiot.getText());
                 if (this.id == 0) {
                     BazaDanych.bazaDanych.addProwadzacy(temp, Arrays.toString(haslo.getPassword()).toCharArray());
-                }
-                else {
+                } else {
                     if (haslo.getPassword().length == 0) {
                         BazaDanych.bazaDanych.editProwadzacy(temp, new char[]{'\0'});
                         this.dispose();
-                    }
-                    else BazaDanych.bazaDanych.editProwadzacy(temp, Arrays.toString(haslo.getPassword()).toCharArray());
+                    } else
+                        BazaDanych.bazaDanych.editProwadzacy(temp, Arrays.toString(haslo.getPassword()).toCharArray());
                 }
                 this.dispose();
             } catch (NumberFormatException err) {
