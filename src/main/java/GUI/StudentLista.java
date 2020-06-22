@@ -9,6 +9,9 @@ import java.awt.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Panel wyświetlający studentów i ich dane w formie tabeli.
+ */
 public class StudentLista extends JPanel {
     public JTable table;
     String[] kolumny = {"ID", "Imie i Nazwisko", "PESEL", "Rok studiow", "Nr albumu"};

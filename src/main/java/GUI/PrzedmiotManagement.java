@@ -6,8 +6,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.sql.SQLException;
 
+/**
+ * Okno zarządzania przedmiotami.
+ */
 public class PrzedmiotManagement extends JFrame {
     private final JButton dodaj, usun;
+    /**
+     * Tabela przedmiotów.
+     */
     private final PrzedmiotLista tabelka;
 
     public PrzedmiotManagement() throws SQLException {

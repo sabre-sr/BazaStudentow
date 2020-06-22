@@ -5,6 +5,10 @@ import java.awt.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Panel wyświetlający wyniki wyszukiwania. Jest modyfikowany przez klasę FindStudents.
+ * @see FindStudents
+ */
 public class SearchStudents extends JPanel {
     public ResultSet resultSet;
     public StudentLista tabelka;

@@ -11,6 +11,9 @@ import java.security.spec.InvalidKeySpecException;
 import java.sql.SQLException;
 import java.util.Arrays;
 
+/**
+ * Okno dialogowe edycji danych studenta.
+ */
 public class StudentEdycja extends JDialog {
     private final int id;
     JLabel imienazwisko_label, pesel_label, rokstudiow_label, nralbumu_label, haslo_label;
@@ -54,6 +57,9 @@ public class StudentEdycja extends JDialog {
         armWindow();
     }
 
+    /**
+     * Dodaje akcje powiązane z przyciskami oraz ustala układ danych w oknie.
+     */
     private void armWindow() {
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         this.setLayout(new FlowLayout());

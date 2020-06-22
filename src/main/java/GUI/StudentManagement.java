@@ -11,6 +11,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/**
+ * Okno zarządzania studentami przez dziekanat.
+ * <p>Pozwala na ich dodawanie, usuwanie, edycje ich danych osobowych, a także wyświetlanie ich karty ocen, obliczanie średniej końcowej oraz promocję studentów.</p>
+ */
 public class StudentManagement extends JFrame {
     private final JButton dodaj, edytuj, karta, usun, graduate, srednia;
     private final StudentLista tabelka;

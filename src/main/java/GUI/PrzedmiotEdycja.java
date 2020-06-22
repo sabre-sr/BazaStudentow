@@ -6,6 +6,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.sql.SQLException;
 
+/**
+ * Okno edycji przedmiotu. <p>Pozwala na dodanie nowego przedmiotu.</p>
+ */
 public class PrzedmiotEdycja extends JDialog {
     JLabel nazwaLabel;
     JTextField nazwa;

@@ -8,11 +8,18 @@ import java.awt.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Panel wyświetlający listę przedmiotów.
+ */
 public class PrzedmiotLista extends JPanel {
     public JTable table;
     String[] kolumny = {"ID", "Przedmiot", "Nazwa tabeli"};
     DefaultTableModel tableModel;
 
+    /**
+     * Tworzy panel z listą przedmiotów i wypełnia go danymi.
+     * @throws SQLException generyczny błąd SQL.
+     */
     public PrzedmiotLista() throws SQLException {
         super();
         tableModel = new DefaultTableModel(kolumny, 0) {
@@ -29,6 +36,10 @@ public class PrzedmiotLista extends JPanel {
         this.add(scrollPane, BorderLayout.CENTER);
     }
 
+    /**
+     * Ładuje nowe dane do tabeli
+     * @throws SQLException generyczny błąd SQL
+     */
     public void loadData() throws SQLException {
         tableModel.setRowCount(0);
         ResultSet rs = BazaDanych.bazaDanych.getPrzedmioty();

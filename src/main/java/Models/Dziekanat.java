@@ -8,6 +8,9 @@ import java.security.spec.InvalidKeySpecException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ *
+ */
 public class Dziekanat extends Osoba {
     public Dziekanat(String imienazwisko) {
         super(imienazwisko);
