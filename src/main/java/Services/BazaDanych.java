@@ -148,7 +148,6 @@ public final class BazaDanych {
             ps.setString(1, ('%'+s.getImieNazwisko()+'%'));
         }
         result = ps.executeQuery();
-        result.next();
         return result;
     }
 
@@ -235,6 +234,14 @@ public final class BazaDanych {
     public void addStudentToClass(Student temp, String przedmiot) throws SQLException {
         String tabela = this.getNazwaTabeli(przedmiot);
         ps = conn.prepareStatement(String.format("INSERT INTO %s (id_stud) VALUES (?)", tabela));
+        ps.setInt(1, temp.getId());
+        ps.execute();
+        ps.close();
+    }
+
+    public void removeStudentFromClass(Student temp, String przedmiot) throws SQLException {
+        String tabela = this.getNazwaTabeli(przedmiot);
+        ps = conn.prepareStatement(String.format("DELETE FROM %s WHERE id_stud = ?", tabela));
         ps.setInt(1, temp.getId());
         ps.execute();
         ps.close();

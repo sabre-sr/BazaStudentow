@@ -32,6 +32,9 @@ public class EditGrades extends JDialog implements Serializable {
         this.oceny = new JPanel();
         this.oceny.add(this.oceny_label = new JLabel("Oceny: "));
         this.ocenyField = new ArrayList<JTextField>();
+        if (oceny == null){
+            oceny = "0.0";
+        }
         String[] tokens = oceny.split(" ");
         for (String i : tokens) {
             ocenyField.add(new JTextField(i, 3));

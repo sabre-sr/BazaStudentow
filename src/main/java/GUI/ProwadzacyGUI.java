@@ -1,5 +1,6 @@
 package GUI;
 
+import Models.Student;
 import Services.BazaDanych;
 
 import javax.swing.*;
@@ -9,7 +10,7 @@ import java.sql.SQLException;
 public class ProwadzacyGUI extends JFrame {
     private final Models.Prowadzacy uzytkownik;
     JLabel imienazwisko, przedmiot;
-    JButton dodajUcznia, edytujOcene;
+    JButton dodajUcznia, usunUcznia, edytujOcene;
     OcenyGrupy tabelka;
 
     public ProwadzacyGUI(Models.Prowadzacy uzytkownik) throws SQLException {
@@ -19,6 +20,7 @@ public class ProwadzacyGUI extends JFrame {
         this.add(this.tabelka = new OcenyGrupy(BazaDanych.bazaDanych.getGradeList(this.uzytkownik.getPrzedmiot()), BazaDanych.bazaDanych.getStudentIDList(this.uzytkownik.getPrzedmiot()), this.uzytkownik.getPrzedmiot()));
         this.add(this.edytujOcene = new JButton("Edytuj ocenę"));
         this.add(this.dodajUcznia = new JButton("Dodaj ucznia"));
+        this.add(this.usunUcznia = new JButton("Usuń ucznia"));
         this.setSize(500, 600);
         this.setLayout(new FlowLayout());
         this.setVisible(true);
@@ -41,6 +43,19 @@ public class ProwadzacyGUI extends JFrame {
         this.dodajUcznia.addActionListener(e -> {
             try {
                 new AddStudentsToClass(uzytkownik.getPrzedmiot());
+                this.tabelka.loadData(BazaDanych.bazaDanych.getGradeList(this.uzytkownik.getPrzedmiot()), BazaDanych.bazaDanych.getStudentIDList(this.uzytkownik.getPrzedmiot()));
+            } catch (SQLException throwables) {
+                JOptionPane.showMessageDialog(null, ("Problem z bazą danych: ")+throwables.getMessage());
+                throwables.printStackTrace();
+            }
+        });
+        this.usunUcznia.addActionListener(e -> {
+            try {
+                int row = tabelka.table.getSelectedRow();
+                int id = (int) tabelka.table.getValueAt(row,0);
+                Student temp = new Student();
+                temp.setId(id);
+                BazaDanych.bazaDanych.removeStudentFromClass(temp, uzytkownik.getPrzedmiot());
                 this.tabelka.loadData(BazaDanych.bazaDanych.getGradeList(this.uzytkownik.getPrzedmiot()), BazaDanych.bazaDanych.getStudentIDList(this.uzytkownik.getPrzedmiot()));
             } catch (SQLException throwables) {
                 JOptionPane.showMessageDialog(null, ("Problem z bazą danych: ")+throwables.getMessage());

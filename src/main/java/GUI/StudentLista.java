@@ -32,7 +32,6 @@ public class StudentLista extends JPanel {
 
     public void loadData() throws SQLException {
         ResultSet rs = BazaDanych.bazaDanych.getStudents();
-        rs.next();
         this.loadData(rs);
     }
 

@@ -4,6 +4,7 @@ package Utils;
 import Models.Dziekanat;
 import Services.BazaDanych;
 
+import javax.swing.*;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.sql.Connection;
@@ -11,7 +12,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public abstract class createDB {
+public abstract class CreateDb {
     public static boolean newDB() {
         Connection conn = null;
         String path = "jdbc:sqlite:baza.db";
@@ -92,6 +93,7 @@ public abstract class createDB {
             conn.close();
             String haslo = "[r, o, o, t]";
             BazaDanych.bazaDanych.addDziekanat(new Dziekanat("root"), haslo.toCharArray());
+            JOptionPane.showMessageDialog(null, "Baza danych została utworzona pomyślnie. Dane dostępu do dziekanatu: \n Login: root \n Hasło: root");
         } catch (SQLException | InvalidKeySpecException | NoSuchAlgorithmException throwables) {
             throwables.printStackTrace();
             return false;

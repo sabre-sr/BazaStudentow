@@ -13,6 +13,7 @@ public class AddStudentsToClass extends JDialog {
     public AddStudentsToClass(String przedmiot) throws SQLException {
         this.setTitle("Wyniki wyszukiwania");
         this.setModal(true);
+        this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         this.add(this.wyniki = new SearchStudents());
         this.setSize(470,510);
         this.add(this.dodaj = new JButton("Dodaj"));

@@ -31,7 +31,6 @@ public class PrzedmiotLista extends JPanel{
     public void loadData() throws SQLException {
         tableModel.setRowCount(0);
         ResultSet rs = BazaDanych.bazaDanych.getPrzedmioty();
-        rs.next();
         Utils.TableTools.fillTable(rs, tableModel, table, "przedmiot");
     }
 
