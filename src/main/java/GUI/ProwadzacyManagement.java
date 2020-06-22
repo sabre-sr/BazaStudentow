@@ -11,6 +11,7 @@ public class ProwadzacyManagement extends JFrame {
     private final JButton dodaj, usun;
 
     public ProwadzacyManagement() throws SQLException {
+        super("Zarządzanie prowadzącymi");
         this.add(this.tabelka = new ProwadzacyLista());
         this.add(dodaj = new JButton("Dodaj"));
         this.add(usun = new JButton("Usuń"));

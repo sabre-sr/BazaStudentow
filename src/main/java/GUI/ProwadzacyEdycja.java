@@ -24,6 +24,7 @@ public class ProwadzacyEdycja extends JDialog{
     }
 
     public ProwadzacyEdycja(int id) {
+        this.setModal(true);
         this.id = id;
         this.add(this.imienazwisko_label = new JLabel("Imie i nazwisko: "));
         this.add(this.imienazwisko = new JTextField(7));
