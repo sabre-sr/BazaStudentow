@@ -1,25 +1,46 @@
 package Services;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
-import java.sql.*;
-import java.util.ArrayList;
-
 import Exceptions.InvalidPESELException;
 import Models.Dziekanat;
 import Models.Osoba;
 import Models.Prowadzacy;
 import Models.Student;
 import Utils.Passwords;
-import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.text.WordUtils;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.jetbrains.annotations.NotNull;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.sql.*;
+import java.util.ArrayList;
+
+/**
+ * Klasa odpowiadająca za komunikację wszystkich innych klas z bazą danych SQL.
+ * <p>Klasa zajmuje się wykonywaniem operacji na bazie danych, i zwracaniem jej rezultatów w formie gotowej do wykorzystania
+ * przez resztę klas.</p>
+ */
 public final class BazaDanych {
+    /**
+     * Element singleton, pozwalający na wykonywanie operacji bez potrzeby tworzenia nowego obiektu klasy.
+     */
     public static BazaDanych bazaDanych = new BazaDanych();
+    /**
+     * Połączenie z bazą danych. Konwertuje obiekty klasy Statement w zapytania języka SQL.
+     */
     private static Connection conn;
+    /**
+     * Obiekt pozwalający na składanie przygotowanych zapytań SQL.
+     * <p>Zapytanie zostaje najpierw wysłane do bazy, a dopiero po tym zostaje wypełnione zmiennymi. Pozwala to na uniknięcia ataków typu SQL injection.</p>
+     * @see PreparedStatement
+     */
     private PreparedStatement ps;
+    /**
+     * Wspólna zmienna z wynikami zapytania.
+     * <p>Ze względu na to, że obiekty klasy ResultSet nie są automatycznie niszczone po użyciu, unika się tworzenia ich większej ilości.</p>
+     * @see ResultSet
+     */
     private ResultSet result;
 
 

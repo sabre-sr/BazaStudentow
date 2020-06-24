@@ -10,6 +10,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/**
+ * Klasa reprezentująca studenta.
+ * <p>Student może sprawdzić swoje oceny z przedmiotów oraz swoje oceny końcowe.</p>
+ */
 public class Student extends Osoba {
     private final String pesel;
     private int nralbumu;
@@ -36,6 +40,13 @@ public class Student extends Osoba {
     }
 
 
+    /**
+     * Metoda konstruująca studenta z wyników wyszukiwania.
+     * @param resultSet Rezultat z bazy danych, zawierający dane logującego się użytkownika.
+     * @return Klasa Student, reprezentująca zalogowanego użytkownika
+     * @throws SQLException Generyczny błąd SQL
+     * @throws InvalidPESELException Wyjątek błędnego numeru PESEL w bazie
+     */
     public static Student createStudent(ResultSet resultSet) throws SQLException, InvalidPESELException {
         Student student = new Student(resultSet.getString("imienazwisko"), resultSet.getString("pesel"), resultSet.getInt("nralbumu"), resultSet.getInt("rokstudiow"));
         student.setId(resultSet.getInt("id"));
@@ -69,19 +80,13 @@ public class Student extends Osoba {
         this.nralbumu = 0;
         this.rok_studiow = 0;
     }
-
+    /**
+     * Otwiera menu główne studenta.
+     * @see Interfaces.WindowManagement
+     */
     @Override
     public void openWindow() throws SQLException {
         new StudentGUI(this);
     }
 
-    public String getGrades() throws SQLException {
-        ResultSet studentQuery = Services.BazaDanych.bazaDanych.getStudent(this);
-        ArrayList<ImmutablePair<String, ResultSet>> oceny = BazaDanych.bazaDanych.getGrades(studentQuery.getInt("id"));
-        StringBuilder out = new StringBuilder();
-        for (ImmutablePair<String, ResultSet> i : oceny) {
-            out.append(i.left).append(": ").append(i.right).append('\n');
-        }
-        return out.toString();
-    }
 }
