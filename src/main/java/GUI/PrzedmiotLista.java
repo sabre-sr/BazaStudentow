@@ -37,7 +37,7 @@ public class PrzedmiotLista extends JPanel {
     }
 
     /**
-     * Ładuje nowe dane do tabeli
+     * Laduje nowe dane do tabeli
      * @throws SQLException generyczny błąd SQL
      */
     public void loadData() throws SQLException {

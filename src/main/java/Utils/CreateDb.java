@@ -13,6 +13,11 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public abstract class CreateDb {
+    /**
+     * Metoda tworząca nową bazę danych.
+     * @return true jeżeli tworzenie powiodło się;
+     * false jeśli nie powiodło się.
+     */
     public static boolean newDB() {
         Connection conn = null;
         String path = "jdbc:sqlite:baza.db";
@@ -20,6 +25,7 @@ public abstract class CreateDb {
             conn = DriverManager.getConnection(path);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+            return false;
         }
         assert conn != null;
         PreparedStatement ps;

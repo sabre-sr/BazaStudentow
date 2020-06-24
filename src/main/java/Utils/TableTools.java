@@ -7,6 +7,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public abstract class TableTools implements Serializable {
+    /**
+     * Wypełnia tablice danymi zgodnie z ich przeznaczeniem.
+     * @param rs ResultSet zawierający listę danych.
+     * @param tableModel TableModel tabeli do wypełnienia.
+     * @param table Tabela do wypełnienia.
+     * @param tryb Jaki rodzaj danych jest dodawany do tabeli.
+     * @throws SQLException Generyczny błąd SQL.
+     */
     public static void fillTable(ResultSet rs, DefaultTableModel tableModel, JTable table, String tryb) throws SQLException {
         Object[] data;
         while (rs.next()) {
