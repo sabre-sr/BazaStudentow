@@ -1,5 +1,8 @@
 package Utils;
 
+/**
+ * Narzędzia walidujące nr PESEL.
+ */
 public abstract class PESEL {
     /**
      * Sprawdza czy wprowadzony nr PESEL jest prawidłowy.

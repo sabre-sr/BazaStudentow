@@ -42,7 +42,7 @@ public class StudentEdycja extends JDialog {
     public StudentEdycja(Student student) {
         this.setModal(true);
         this.add(this.imienazwisko_label = new JLabel("Imie i nazwisko "));
-        this.add(this.imienazwisko = new JTextField(student.getImieNazwisko(), 7));
+        this.add(this.imienazwisko = new JTextField(student.getImienazwisko(), 7));
         this.add(this.pesel_label = new JLabel("PESEL: "));
         this.add(this.pesel = new JTextField(student.getPesel(), 10));
         this.add(this.rokstudiow_label = new JLabel("Rok studiow: "));

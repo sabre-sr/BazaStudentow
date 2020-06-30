@@ -245,9 +245,9 @@ public final class BazaDanych {
         } else if (s.getNralbumu() != 0) {
             ps = conn.prepareStatement("SELECT * FROM studenci WHERE nralbumu=?");
             ps.setInt(1, s.getNralbumu());
-        } else if (!s.getImieNazwisko().equals("")) {
+        } else if (!s.getImienazwisko().equals("")) {
             ps = conn.prepareStatement("SELECT * FROM studenci WHERE imienazwisko LIKE ?");
-            ps.setString(1, ('%' + s.getImieNazwisko() + '%'));
+            ps.setString(1, ('%' + s.getImienazwisko() + '%'));
         }
         result = ps.executeQuery();
         return result;
@@ -322,7 +322,7 @@ public final class BazaDanych {
      * @throws SQLException Generyczny błąd SQL
      */
     private void bindStudentFields(Student s) throws SQLException {
-        ps.setString(1, s.getImieNazwisko());
+        ps.setString(1, s.getImienazwisko());
         ps.setString(4, s.getPesel());
         ps.setInt(5, s.getRok_studiow());
         ps.setInt(6, s.getNralbumu());

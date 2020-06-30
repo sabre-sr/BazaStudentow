@@ -6,6 +6,9 @@ import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Wypełnianie tabeli danymi w różnych częściach programu.
+ */
 public abstract class TableTools implements Serializable {
     /**
      * Wypełnia tablice danymi zgodnie z ich przeznaczeniem.

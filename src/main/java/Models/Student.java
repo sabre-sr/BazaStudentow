@@ -35,10 +35,6 @@ public class Student extends Osoba {
         this.nralbumu = nralbumu;
     }
 
-    public String getImieNazwisko() {
-        return super.getImienazwisko();
-    }
-
 
     /**
      * Metoda konstruująca studenta z wyników wyszukiwania.

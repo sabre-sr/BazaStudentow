@@ -20,7 +20,7 @@ public class StudentGUI extends JFrame {
      */
     public StudentGUI(Models.Student student) throws SQLException {
         this.uzytkownik = student;
-        this.add(this.imienazwisko = new JLabel("Zalogowany jako: " + uzytkownik.getImieNazwisko()));
+        this.add(this.imienazwisko = new JLabel("Zalogowany jako: " + uzytkownik.getImienazwisko()));
         this.add(this.pesel = new JLabel("PESEL: " + uzytkownik.getPesel()));
         this.getContentPane().add(new OcenyUcznia(BazaDanych.bazaDanych.getGrades(uzytkownik.getId())));
         this.pack();

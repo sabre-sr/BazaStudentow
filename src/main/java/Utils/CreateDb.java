@@ -12,6 +12,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+/**
+ * Tworzenie nowej bazy danych.
+ */
 public abstract class CreateDb {
     /**
      * Metoda tworząca nową bazę danych.
